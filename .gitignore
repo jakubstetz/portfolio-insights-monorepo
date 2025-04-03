@@ -7,8 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-venv
-__pycache__
 node_modules
 dist
 dist-ssr
@@ -25,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .qodo
+
+# Personal Additions
+venv
+__pycache__
+ISSUE_TEMPLATE.md
