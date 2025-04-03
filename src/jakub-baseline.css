@@ -1,0 +1,37 @@
+/* Adapted from http://meyerweb.com/eric/tools/css/reset/
+   v1.3 | 20240811
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  line-height: 1;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+a {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.centered-text {
+  text-align: center;
+}
+
+.image-container {
+  overflow: hidden;
+}
+
+.image-container img {
+  display: block;
+  max-width: 100%;
+  height: auto; /* Scale height proportionately with width. Use width: auto to instead scale width proportionately with height. */
+}
