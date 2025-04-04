@@ -27,3 +27,8 @@
 ## Notes to Future Me
 ---
 - 
+
+## References
+---
+- []()
+- []()
