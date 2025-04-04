@@ -9,17 +9,6 @@ https://yfinance-python.org/
 
 import yfinance as yf
 
-# show actions (dividends, splits)
-# apple.actions
-
-# show dividends
-# apple.dividends
-
-# show splits
-# apple.splits
-
-# + other methods etc.
-
-def historical_data(ticker):
+def stock_info(ticker):
   ticker_data = yf.Ticker(ticker)
   return ticker_data.info

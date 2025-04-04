@@ -8,7 +8,7 @@ Start a server by running the shell command: fastapi dev server.py
 '''
 
 from fastapi import FastAPI
-from yfinance_functions import historical_data
+from yfinance_functions import stock_info
 
 app = FastAPI() # Initialize FastAPI server
 
@@ -16,12 +16,14 @@ app = FastAPI() # Initialize FastAPI server
 async def root():
     return 'Hello World'
 
-@app.get("/data/{ticker}")
-async def historical_data_p(ticker = 'SPY'): # Endpoint to practice using path parameters
+@app.get("/info/{ticker}")
+async def get_stock_info(ticker = 'SPY'): # Endpoint to return basic stock information
     if len(ticker) > 5: return 'Error! Invalid Ticker!'
-    return historical_data(ticker)
+    return stock_info(ticker)
 
+'''
 @app.get("/data")
-async def historical_data_q(ticker = 'SPY'): # Same functionality as above; endpoint to practice using query parameters
+async def historical_data_q(ticker = 'SPY'): # Endpoint to practice using query parameters
     if len(ticker) > 5: return 'Error! Invalid Ticker!'
     return ticker
+'''
