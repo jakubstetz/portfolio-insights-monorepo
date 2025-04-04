@@ -15,6 +15,11 @@ async def root():
     return 'Hello World'
 
 @app.get("/data/{ticker}")
-async def historical_data(ticker = 'SPY'): # Endpoint to practice using path parameters
+async def historical_data_p(ticker = 'SPY'): # Endpoint to practice using path parameters
+    if len(ticker) > 5: return 'Error! Invalid Ticker!'
+    return ticker
+
+@app.get("/data")
+async def historical_data_q(ticker = 'SPY'): # Same functionality as above; endpoint to practice using query parameters
     if len(ticker) > 5: return 'Error! Invalid Ticker!'
     return ticker
