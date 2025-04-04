@@ -1,3 +1,10 @@
+/*
+Main entry point for the React frontend.
+Start with the shell command: npm run dev
+
+
+*/
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
