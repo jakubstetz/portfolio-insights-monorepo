@@ -29,3 +29,4 @@ venv
 __pycache__
 ISSUE_TEMPLATE.md
 .env
+requirements_intro.txt
