@@ -1,12 +1,13 @@
 '''
-Development begun using AlgoTrading101 Blog's "yfinance Library – A Complete Guide" article as areference.
-Reference: https://algotrading101.com/learn/yfinance-guide/
+Development begun using AlgoTrading101 Blog's "yfinance Library – A Complete Guide" article as a reference:
+https://algotrading101.com/learn/yfinance-guide/
+
+Full documentation available here:
+https://yfinance-python.org/
 
 '''
 
-# import yfinance as yf
-
-# apple= yf.Ticker("aapl")
+import yfinance as yf
 
 # show actions (dividends, splits)
 # apple.actions
@@ -20,4 +21,5 @@ Reference: https://algotrading101.com/learn/yfinance-guide/
 # + other methods etc.
 
 def historical_data(ticker):
-  return f'You\'re retrieving historical data for {ticker}!'
+  ticker_data = yf.Ticker(ticker)
+  return ticker_data.info
