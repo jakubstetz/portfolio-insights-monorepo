@@ -30,3 +30,4 @@ __pycache__
 ISSUE_TEMPLATE.md
 .env
 requirements_intro.txt
+project_architecture.txt
