@@ -9,11 +9,8 @@ def get(id):
   Get stock price alert by id.
   '''
   with database.connection.cursor() as cur:
-    cur.execute('''
-                INSERT INTO alerts (ticker, price, direction, one_time, creation_date, expiration_date)
-                VALUES ('TRYYY', 225.00, 'below', true, NOW(), NOW() + INTERVAL '7 days');
-                ''')
-  # database.execute('SELECT * FROM alerts WHERE alert_id = 3;')
+    cur.execute('SELECT * FROM alerts WHERE alert_id = %s;', (id,))
+    return cur.fetchone()
 
 def create(id, ticker, price, direction, one_time, expiration_date):
   '''

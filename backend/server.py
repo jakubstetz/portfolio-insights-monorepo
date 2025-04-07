@@ -48,7 +48,9 @@ async def get_stock_info(ticker = 'SPY'): # Endpoint to return basic stock infor
 # Endpoint to retrieve an alert by id
 @app.get("/alerts")
 def get_alert(id):
-    return alerts.get(id)
+    alert = alerts.get(id)
+    if not alert: return 'Error!' # Alert with the given id wasn't found
+    else: return alert
 
 # Endpoint to create a new alert
 @app.post("/alerts")
