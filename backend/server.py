@@ -9,10 +9,31 @@ Start a server by running the shell command: fastapi dev server.py
 
 from fastapi import FastAPI
 import alerts
+import database
+from yfinance_functions import stock_info
 
 app = FastAPI() # Initialize FastAPI server
 
-@app.get('/') # Root endpoint
+# ------------------------------------------------------------------------ #
+
+##### Lifespan Events #####
+
+# On startup, open database connection
+@app.on_event("startup")
+def startup():
+    return database.init()
+
+# On shutdown, commit database changes and close database connection
+@app.on_event("shutdown")
+def shutdown():
+    return database.close()
+
+# ------------------------------------------------------------------------ #
+
+##### General #####
+
+# Root endpoint
+@app.get('/')
 async def root():
     return 'Hello World'
 
@@ -22,21 +43,26 @@ async def get_stock_info(ticker = 'SPY'): # Endpoint to return basic stock infor
 
 # ------------------------------------------------------------------------ #
 
-##### Managing Alerts #####
+##### Manage Stock Price Alerts #####
+
+# Endpoint to retrieve an alert by id
 @app.get("/alerts")
-def get_alert(id): # Endpoint to retrieve an alert by id
+def get_alert(id):
     return alerts.get(id)
 
+# Endpoint to create a new alert
 @app.post("/alerts")
-def create_alert(ticker, price, direction, one_time, expiration_date): # Endpoint to create a new alert
+def create_alert(ticker, price, direction, one_time, expiration_date):
     return alerts.create(ticker, price, direction, one_time, expiration_date)
 
+# Endpoint to delete an existing alert by id
 @app.delete("/alerts")
-def delete_alert(id): # Endpoint to delete an existing alert by id
+def delete_alert(id):
     return alerts.delete(id)
 
+# Endpoint to return basic stock information
 @app.patch("/alerts")
-def update_alert(id, ticker, price, direction, one_time, expiration_date): # Endpoint to return basic stock information
+def update_alert(id, ticker, price, direction, one_time, expiration_date): 
     return alerts.update(id)
 
 '''
