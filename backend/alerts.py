@@ -1,7 +1,22 @@
 '''
-This file contains all of the functionality in order to manage stock price alerts through interaction with the PostgreSQL database.
+This file implements all of the functionality in order to manage stock price alerts through interaction with the PostgreSQL database.
 '''
 
+import psycopg as postgres
+
+# Connect to an existing database
+with postgres.connect("host=localhost port=5432 dbname=portfolio_insights") as connection:
+    '''
+    Go to the following link for information about the PostgreSQL connection string, which is the single argument that's used in the connect() call above:
+    https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
+    '''
+
+    # Open a cursor to perform database operations
+    with connection.cursor() as database:
+        database.execute('''
+                    INSERT INTO alerts (ticker, price, direction, one_time, creation_date, expiration_date)
+                    VALUES ('SPXL', 225.00, 'below', true, NOW(), NOW() + INTERVAL '7 days');
+                    ''')
 
 
 def get(id):
