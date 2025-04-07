@@ -7,13 +7,16 @@ https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
 
 import psycopg as postgres
 
-def database_init():
-  # Open a connection to our portfolio_insights database
-  database_connection = postgres.connect('host=localhost port=5432 dbname=portfolio_insights')
-  
-  # Open a cursor to perform database operations
-  alerts_database = database_connection.cursor()
+connection = None
 
-def database_close():
-  # Make the changes to the database persistent
-  database_connection.commit()
+# Open a connection to our portfolio_insights database on API startup
+def init():
+  global connection
+  connection = postgres.connect('host=localhost port=5432 dbname=portfolio_insights')
+
+# Make the changes to the database persistent and close database connection on API shutdown
+def close():
+  global connection
+  if connection:
+    connection.commit() # Make changes to database persistent
+    connection.close() # Close database connection
