@@ -13,6 +13,11 @@ def get(id):
   '''
   Get stock price alert by id.
   '''
+  # Connect to an existing database
+  with postgres.connect('host=localhost port=5432 dbname=portfolio_insights') as connection:
+   # Open a cursor to perform database operations
+   with connection.cursor() as database:
+      database.execute('SELECT * FROM alerts WHERE alert_id = 3;')
 
 def create(id, ticker, price, direction, one_time, expiration_date):
   '''
