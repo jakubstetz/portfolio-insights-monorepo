@@ -12,7 +12,7 @@ def get(id):
   """
   with database.connection.cursor() as cur:
     cur.execute('SELECT * FROM alerts WHERE alert_id = %s;', (id,))
-    return cur.fetchone()
+    return cur.fetchone() # Return retrieved alert
 
 def create(alert):
   """
@@ -21,10 +21,10 @@ def create(alert):
   with database.connection.cursor() as cur:
     alert = alert.dict()
     cur.execute('''
-                INSERT INTO alerts (ticker, price, direction, expiration_date)
-                VALUES (%(ticker)s, %(price)s, %(direction)s, %(expiration_date)s) RETURNING alert_id;
+                INSERT INTO alerts (ticker, price, direction, expiration_time)
+                VALUES (%(ticker)s, %(price)s, %(direction)s, %(expiration_time)s) RETURNING alert_id;
                 ''', alert)
-    return cur.fetchone()
+    return cur.fetchone()[0] # Return id for new alert
 
 def delete(id):
   """
@@ -32,12 +32,7 @@ def delete(id):
   """
   with database.connection.cursor() as cur:
     cur.execute("DELETE FROM alerts WHERE alert_id = %s RETURNING alert_id;", (id,))
-    return cur.fetchone()
-
-def update(id):
-  """
-  Update a stock price alert by id.
-  """
+    return cur.fetchone()[0] # Return id for deleted alert
 
 def evaluate():
   """
