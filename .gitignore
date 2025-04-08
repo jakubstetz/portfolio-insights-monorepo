@@ -30,3 +30,4 @@ __pycache__
 ISSUE_TEMPLATE.md
 .env
 project_notes
+testing.py
