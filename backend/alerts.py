@@ -24,6 +24,7 @@ def create(alert):
                 INSERT INTO alerts (ticker, price, direction, expiration_time)
                 VALUES (%(ticker)s, %(price)s, %(direction)s, %(expiration_time)s) RETURNING alert_id;
                 ''', alert)
+    database.connection.commit()
     return cur.fetchone()[0] # Return id for new alert
 
 def delete(id):
@@ -32,6 +33,7 @@ def delete(id):
   """
   with database.connection.cursor() as cur:
     cur.execute("DELETE FROM alerts WHERE alert_id = %s RETURNING alert_id;", (id,))
+    database.connection.commit()
     return cur.fetchone()[0] # Return id for deleted alert
 
 def evaluate():
@@ -69,3 +71,4 @@ def trigger(id):
                 SET triggered = true, triggered_time = %s, expired = NULL, expiration_time = NULL
                 WHERE alert_id = %s;
                 ''', (datetime.now(timezone.utc), id))
+    database.connection.commit()

@@ -33,7 +33,7 @@ class Alert(BaseModel): # Used for easier alert creation in alerts POST route wi
 def startup():
     return database.init()
 
-# On shutdown, commit database changes and close database connection
+# On shutdown, close database connection
 @app.on_event("shutdown")
 def shutdown():
     return database.close()
