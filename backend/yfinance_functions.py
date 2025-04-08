@@ -11,3 +11,9 @@ import yfinance as yf
 def stock_info(ticker):
   ticker_data = yf.Ticker(ticker)
   return ticker_data.info
+
+def stock_price(ticker):
+  """
+  Retrieve current stock price.
+  """
+  return yf.Ticker(ticker).fast_info["lastPrice"]
