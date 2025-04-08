@@ -74,9 +74,12 @@ def create_alert(alert: Alert):
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
 def delete_alert(id):
-    return alerts.delete(id)
+    if alerts.delete(id):
+        return f"Alert {id} deleted."
+    else:
+        return 'Error!' 
 
-# Endpoint to return basic stock information
+# Endpoint to return basic stock information - NOT IMPLEMENTED
 @app.patch("/alerts")
 def update_alert(id, ticker, price, direction, one_time, expiration_date): 
     return alerts.update(id)
