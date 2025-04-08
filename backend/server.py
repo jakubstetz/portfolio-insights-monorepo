@@ -64,9 +64,10 @@ def get_alert(id):
 # Endpoint to create a new alert
 @app.post("/alerts")
 def create_alert(alert: Alert):
+    insertion_id = alerts.create(alert)[0]
     # Successful alert creation
-    if alerts.create(alert):
-        return 'Success! Alert created:'
+    if insertion_id:
+        return f'Success! Alert created with id#{insertion_id}'
     # Alert creation failed
     else: return 'Error!'
 

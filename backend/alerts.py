@@ -19,9 +19,9 @@ def create(alert):
   with database.connection.cursor() as cur:
     cur.execute('''
                 INSERT INTO alerts (ticker, price, direction, one_time, creation_date, expiration_date)
-                VALUES (%s, %s, %s, %s, NOW(), %s);
+                VALUES (%s, %s, %s, %s, NOW(), %s) RETURNING alert_id;
                 ''', (alert.ticker, alert.price, alert.direction, alert.one_time, alert.expiration_date))
-  return True
+    return cur.fetchone()
 
 def delete(id):
   """
