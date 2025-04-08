@@ -19,7 +19,6 @@ class Alert(BaseModel): # Used for easier alert creation in alerts POST route
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
-    one_time: bool
     expiration_date: datetime # ISO 8601 string will be automatically parsed
 
 # ------------------------------------------------------------------------ #

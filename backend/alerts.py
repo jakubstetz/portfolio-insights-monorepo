@@ -21,8 +21,8 @@ def create(alert):
   with database.connection.cursor() as cur:
     alert = alert.dict()
     cur.execute('''
-                INSERT INTO alerts (ticker, price, direction, one_time, creation_date, expiration_date)
-                VALUES (%(ticker)s, %(price)s, %(direction)s, %(one_time)s, NOW(), %(expiration_date)s) RETURNING alert_id;
+                INSERT INTO alerts (ticker, price, direction, creation_date, expiration_date)
+                VALUES (%(ticker)s, %(price)s, %(direction)s, NOW(), %(expiration_date)s) RETURNING alert_id;
                 ''', alert)
     return cur.fetchone()
 
