@@ -45,7 +45,10 @@ def evaluate():
   """
   # Retrieve alerts from database
   with database.connection.cursor() as cur:
-    cur.execute('SELECT alert_id, ticker, price, direction FROM alerts WHERE triggered = false;')
+    cur.execute('''SELECT alert_id, ticker, price, direction
+                FROM alerts
+                WHERE triggered = false AND expired = false;
+                ''')
     alerts = cur.fetchall()
 
   # Evaluate alerts and trigger as appropriate
@@ -69,6 +72,6 @@ def trigger(id):
   with database.connection.cursor() as cur:
     cur.execute('''
                 UPDATE alerts
-                SET triggered = true, triggered_time = %s
+                SET triggered = true, triggered_time = %s, expired = NULL, expiration_time = NULL
                 WHERE alert_id = %s;
-                ''', (datetime.now(), id))
+                ''', (datetime.now(timezone.utc), id))
