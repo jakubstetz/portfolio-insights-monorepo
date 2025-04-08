@@ -1,18 +1,26 @@
-""""""
+"""
 Development begun using the FastAPI "First Steps" tutorial.
 Reference: https://fastapi.tiangolo.com/tutorial/first-steps/
 
 Activate the backend virtual environment by running the shell command: source venv/bin/activate
 Start a server by running the shell command: fastapi dev server.py
-
 """
 
 from fastapi import FastAPI
 import alerts
 import database
 from yfinance_functions import stock_info
+from pydantic import BaseModel
+from datetime import datetime
 
 app = FastAPI() # Initialize FastAPI server
+
+class Alert(BaseModel): # Used for easier alert creation in alerts POST route
+    ticker: str # 1-10 characters, enforced in database
+    price: float
+    direction: str # 'above' or 'below'
+    one_time: bool
+    expiration_date: datetime # ISO 8601 string will be automatically parsed
 
 # ------------------------------------------------------------------------ #
 
@@ -37,8 +45,9 @@ def shutdown():
 async def root():
     return 'Hello World'
 
+# Endpoint to return basic stock information
 @app.get("/info/{ticker}")
-async def get_stock_info(ticker = 'SPY'): # Endpoint to return basic stock information
+async def get_stock_info(ticker = 'SPY'):
     return stock_info(ticker)
 
 # ------------------------------------------------------------------------ #
@@ -50,12 +59,17 @@ async def get_stock_info(ticker = 'SPY'): # Endpoint to return basic stock infor
 def get_alert(id):
     alert = alerts.get(id)
     if not alert: return 'Error!' # Alert with the given id wasn't found
-    else: return alert
+    else: return alert # Alert with the given id was found
 
 # Endpoint to create a new alert
 @app.post("/alerts")
-def create_alert(ticker, price, direction, one_time, expiration_date):
-    return alerts.create(ticker, price, direction, one_time, expiration_date)
+def create_alert(alert: Alert):
+    # Successful alert creation
+    if alerts.create(alert):
+        return 'Success! Alert created:'
+    # Alert creation failed
+    else: return 'Error!'
+
 
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
