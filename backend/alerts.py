@@ -45,7 +45,7 @@ def evaluate():
   """
   # Retrieve alerts from database
   with database.connection.cursor() as cur:
-    cur.execute('SELECT alert_id, ticker, price, direction FROM alerts;')
+    cur.execute('SELECT alert_id, ticker, price, direction FROM alerts WHERE triggered = false;')
     alerts = cur.fetchall()
 
   # Evaluate alerts and trigger as appropriate
