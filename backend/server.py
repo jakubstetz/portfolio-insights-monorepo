@@ -16,7 +16,7 @@ import market
 from pydantic import BaseModel
 from datetime import datetime
 
-app = FastAPI() # Initialize FastAPI server
+app = FastAPI()
 
 class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
@@ -65,18 +65,15 @@ async def test(ticker = 'SPY'):
 @app.get("/alerts")
 def get_alert(id):
     alert = alerts.get(id)
-    # Return alert if alert with given id was found, otherwise return an error
     return alert or 'Error!'
 
 # Endpoint to create a new alert
 @app.post("/alerts")
 def create_alert(alert: Alert):
     insertion_id = alerts.create(alert)
-    # Return success message with new alert id if alert successfully created, otherwise return an error
     return f'Success! Alert created with id = {insertion_id}' if insertion_id else 'Error!'
 
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
 def delete_alert(id):
-    # Return success message with deleted alert id if alert successfully deleted, otherwise return an error
     return f"Alert {id} deleted." if alerts.delete(id) else 'Error!'

@@ -47,18 +47,16 @@ def evaluate():
     alerts = cur.fetchall()
 
   # Evaluate alerts and trigger as appropriate
-  checked = {} # Dictionary for caching checked alerts with associated price
-  for id, ticker, price, direction in alerts: # Iterate through returned alerts
+  checked = {}
+  for id, ticker, price, direction in alerts:
     # Retrieve stock price
-    if ticker in checked: # Stock price has already been retreived
-      stock_price = checked[ticker] # Retrieve cached stock price
-    else: # Stock price has not yet been retreived
-      stock_price = market.stock_price(ticker) # Retrieve current stock price using yfinance
-      checked[ticker] = stock_price # Cache current stock price
+    if ticker in checked: stock_price = checked[ticker]
+    else:
+      stock_price = market.stock_price(ticker)
+      checked[ticker] = stock_price
 
-    # Check alert price against actual stock price
-    if (direction == 'below' and price > stock_price) or (direction == 'above' and price < stock_price):
-      trigger(id)
+    # Trigger alert if stock price falls within price alert trigger condition
+    if (direction == 'below' and price > stock_price) or (direction == 'above' and price < stock_price): trigger(id)
 
 def trigger(id):
   """
