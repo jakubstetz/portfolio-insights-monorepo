@@ -9,7 +9,7 @@ Start a server by running the shell command: fastapi dev server.py
 from fastapi import FastAPI
 import alerts
 import database
-from yfinance_functions import stock_info
+from yfinance_functions import stock_info, stock_price
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -49,6 +49,11 @@ async def root():
 @app.get("/info/{ticker}")
 async def get_stock_info(ticker = 'SPY'):
     return stock_info(ticker)
+
+# Endpoint to conveniently test whatever functionality I want
+@app.get("/test/{ticker}")
+async def test(ticker = 'SPY'):
+    return stock_price(ticker)
 
 # ------------------------------------------------------------------------ #
 
