@@ -17,10 +17,11 @@ def create(alert):
   Create a new stock price alert. Note that the alert id will be automatically created in the database using SERIAL.
   """
   with database.connection.cursor() as cur:
+    alert = alert.dict()
     cur.execute('''
                 INSERT INTO alerts (ticker, price, direction, one_time, creation_date, expiration_date)
-                VALUES (%s, %s, %s, %s, NOW(), %s) RETURNING alert_id;
-                ''', (alert.ticker, alert.price, alert.direction, alert.one_time, alert.expiration_date))
+                VALUES (%(ticker)s, %(price)s, %(direction)s, %(one_time)s, NOW(), %(expiration_date)s) RETURNING alert_id;
+                ''', alert)
     return cur.fetchone()
 
 def delete(id):
