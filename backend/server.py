@@ -2,27 +2,29 @@
 Development begun using the FastAPI "First Steps" tutorial.
 Reference: https://fastapi.tiangolo.com/tutorial/first-steps/
 
-Activate the backend virtual environment by running the shell command: source venv/bin/activate
-Start a server by running the shell command: fastapi dev server.py
+Activate the backend virtual environment by running the shell command:
+source venv/bin/activate
+
+Start the server by running the shell command:
+fastapi dev server.py
 """
 
 from fastapi import FastAPI
 import alerts
 import database
-from yfinance_functions import stock_info
+import market
 from pydantic import BaseModel
 from datetime import datetime
 
-app = FastAPI() # Initialize FastAPI server
+app = FastAPI()
 
-class Alert(BaseModel): # Used for easier alert creation in alerts POST route
+class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
-    one_time: bool
-    expiration_date: datetime # ISO 8601 string will be automatically parsed
+    expiration_time: datetime # ISO 8601 string will be automatically parsed
 
-# ------------------------------------------------------------------------ #
+#------------------------------------------------------------------------#
 
 ##### Lifespan Events #####
 
@@ -36,7 +38,7 @@ def startup():
 def shutdown():
     return database.close()
 
-# ------------------------------------------------------------------------ #
+#------------------------------------------------------------------------#
 
 ##### General #####
 
@@ -45,12 +47,17 @@ def shutdown():
 async def root():
     return 'Hello World'
 
-# Endpoint to return basic stock information
+# Endpoint to return basic stock information, mostly for testing
 @app.get("/info/{ticker}")
 async def get_stock_info(ticker = 'SPY'):
-    return stock_info(ticker)
+    return market.stock_info(ticker)
 
-# ------------------------------------------------------------------------ #
+# Flexible endpoint to conveniently test whatever functionality I want
+@app.get("/test")
+async def test():
+    return alerts.evaluate()
+
+#------------------------------------------------------------------------#
 
 ##### Manage Stock Price Alerts #####
 
@@ -58,36 +65,15 @@ async def get_stock_info(ticker = 'SPY'):
 @app.get("/alerts")
 def get_alert(id):
     alert = alerts.get(id)
-    if not alert: return 'Error!' # Alert with the given id wasn't found
-    else: return alert # Alert with the given id was found
+    return alert or 'Error!'
 
 # Endpoint to create a new alert
 @app.post("/alerts")
 def create_alert(alert: Alert):
-    insertion_id = alerts.create(alert)[0]
-    # Successful alert creation
-    if insertion_id:
-        return f'Success! Alert created with id#{insertion_id}'
-    # Alert creation failed
-    else: return 'Error!'
-
+    insertion_id = alerts.create(alert)
+    return f'Success! Alert created with id = {insertion_id}' if insertion_id else 'Error!'
 
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
 def delete_alert(id):
-    if alerts.delete(id):
-        return f"Alert {id} deleted."
-    else:
-        return 'Error!' 
-
-# Endpoint to return basic stock information - NOT IMPLEMENTED
-@app.patch("/alerts")
-def update_alert(id, ticker, price, direction, one_time, expiration_date): 
-    return alerts.update(id)
-
-'''
-@app.get("/data")
-async def historical_data_q(ticker = 'SPY'): # Endpoint to practice using query parameters
-    if len(ticker) > 5: return 'Error! Invalid Ticker!'
-    return ticker
-'''
+    return f"Alert {id} deleted." if alerts.delete(id) else 'Error!'
