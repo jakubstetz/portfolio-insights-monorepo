@@ -53,9 +53,9 @@ async def get_stock_info(ticker = 'SPY'):
     return market.stock_info(ticker)
 
 # Flexible endpoint to conveniently test whatever functionality I want
-@app.get("/test/{ticker}")
-async def test(ticker = 'SPY'):
-    return market.stock_price(ticker)
+@app.get("/test")
+async def test():
+    return alerts.evaluate()
 
 #------------------------------------------------------------------------#
 
