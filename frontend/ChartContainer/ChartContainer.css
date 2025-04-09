@@ -1,0 +1,10 @@
+#chart-container {
+  width: 66.66%;
+  background-color: #1f2937;
+  padding: 20px;
+  margin-top: 80px; /* accounts for fixed header height */
+  height: calc(100vh - 80px);
+  box-sizing: border-box;
+  float: left;
+  overflow-y: auto;
+}
