@@ -1,6 +1,6 @@
-import './ChartContainer.css';
-import SearchBar from './SearchBar';
-import Chart from './Chart';
+import './ChartArea.css';
+import SearchBar from '../SearchBar/SearchBar';
+import Chart from '../Chart/Chart';
 
 function ChartContainer() {
   return (
