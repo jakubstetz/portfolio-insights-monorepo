@@ -13,7 +13,7 @@ def search(search_term):
   with database.connection.cursor() as cur:
     cur.execute('SELECT * FROM alerts;') # ADD A SEARCH TERM CONDITION HERE
     all_alerts = cur.fetchall()
-    return {"all_alerts": all_alerts} # Return corresponding alerts
+    return all_alerts # Return corresponding alerts IS THIS GOOD FORM OR SHOULD THERE BE JSON
 
 def create(alert):
   """

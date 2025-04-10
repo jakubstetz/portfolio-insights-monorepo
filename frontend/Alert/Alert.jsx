@@ -1,9 +1,9 @@
 import './Alert.css';
 
-function Alert({ message }) {
+function Alert({alert}) {
   return (
     <div className="alert">
-      <span>{message}</span>
+      <span>{alert}</span>
       <button className="delete-button">Delete</button>
     </div>
   );
