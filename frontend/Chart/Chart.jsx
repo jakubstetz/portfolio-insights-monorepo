@@ -1,9 +1,9 @@
 import './Chart.css';
 
-function Chart() {
+function Chart({data}) {
   return (
     <div id="chart">
-      <p>Chart will be displayed here.</p>
+      <p>{data}</p>
     </div>
   );
 }
