@@ -14,7 +14,7 @@ form {
   border: 1px solid #374151;
 }
 
-button {
+form button {
   width: 100px;
   background-color: #2b3b50;    /* dark slate with blue tint */
   color: #dbeafe;               /* soft light blue text */
