@@ -70,11 +70,13 @@ async def test():
 
 ##### Manage Stock Price Alerts #####
 
-# Endpoint to retrieve an alert by id
+# Endpoint to retrieve alerts matching a search_term
 @app.get("/alerts")
-def get_alert(id):
-    alert = alerts.get(id)
-    return alert or 'Error!'
+async def get_alert(search_term):
+    try:
+        return alerts.get(search_term)
+    except Exception:
+        raise HTTPException(status_code=404, detail="No matching alerts found")
 
 # Endpoint to create a new alert
 @app.post("/alerts")
