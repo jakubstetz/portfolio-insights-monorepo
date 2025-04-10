@@ -9,7 +9,7 @@ Start the server by running the shell command:
 fastapi dev server.py
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import alerts
 import database
 import market
@@ -47,10 +47,13 @@ def shutdown():
 async def root():
     return 'Hello World'
 
-# Endpoint to return basic stock information, mostly for testing
-@app.get("/info/{ticker}")
-async def get_stock_info(ticker = 'SPY'):
-    return market.stock_info(ticker)
+# Endpoint to return stock price history
+@app.get("/stocks")
+async def get_stock_info(ticker):
+    try:
+        return market.stock_info(ticker)
+    except Exception:
+        raise HTTPException(status_code=404, detail="Ticker not found")
 
 # Flexible endpoint to conveniently test whatever functionality I want
 @app.get("/test")
