@@ -1,10 +1,19 @@
+import { useState } from 'react';
 import './SearchBar.css';
 
-function SearchBar() {
+function SearchBar({searchHandler}) {
+  const [input, setInput] = useState('');
+
+  const submitHandler = e => {
+    e.preventDefault(); // Prevent browser from reloading on submit
+    searchHandler(input);
+  };
+
   return (
-    <div className="search-bar">
-      <input type="text" placeholder="Search stock..." />
-    </div>
+    <form id="search-bar" onSubmit={submitHandler}>
+      <input id="search" value={input} onChange={e => setInput(e.target.value)} placeholder="Search for a stock..." />
+      <button type="submit">Search</button>
+    </form>
   );
 }
 
