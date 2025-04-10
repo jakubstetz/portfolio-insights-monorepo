@@ -24,7 +24,7 @@ form button {
   cursor: pointer;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
   box-shadow: 0 0 6px 3px rgba(147, 197, 253, 0.11); /* faint blue glow */
 }
 
