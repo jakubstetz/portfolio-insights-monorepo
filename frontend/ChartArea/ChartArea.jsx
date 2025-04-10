@@ -6,14 +6,16 @@ import Chart from '../Chart/Chart';
 function ChartArea() {// Use user input in SearchBar component to retrieve stock price history
   const [chartData, setChartData] = useState('')
 
-  const searchHandler = ticker_searched => {
-    const trimmed = ticker_searched.trim().toLowerCase();
-    const isValidTicker = /^$|^[a-z]{1,10}$/.test(trimmed);
+  const searchHandler = async ticker_searched => {
+    const trimmed = ticker_searched.trim().toUpperCase();
+    const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
   
     if (!isValidTicker) {
       setChartData('')
     } else {
-      setChartData(trimmed.toUpperCase())
+      const api_response = await fetch(`http://127.0.0.1:8000/stocks?ticker=${trimmed}`);
+      const stock_data = await api_response.json();
+      setChartData(stock_data);
     }
   };
 
