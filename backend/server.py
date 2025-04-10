@@ -10,19 +10,25 @@ fastapi dev server.py
 """
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import alerts
 import database
 import market
 from pydantic import BaseModel
 from datetime import datetime
 
-app = FastAPI()
-
 class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
     expiration_time: datetime # ISO 8601 string will be automatically parsed
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # "*" SHOULD ONLY BE USED IN DEVELOPMENT, CHANGE TO FRONTEND ORIGIN IN PRODUCTION
+)
 
 #------------------------------------------------------------------------#
 
