@@ -6,13 +6,14 @@ import database
 import market
 from datetime import datetime, timezone
 
-def get(id):
+def search(search_term):
   """
-  Get stock price alert by id.
+  Search stock price alerts by a search term.
   """
   with database.connection.cursor() as cur:
-    cur.execute('SELECT * FROM alerts WHERE alert_id = %s;', (id,))
-    return cur.fetchone() # Return retrieved alert
+    cur.execute('SELECT * FROM alerts;') # ADD A SEARCH TERM CONDITION HERE
+    all_alerts = cur.fetchall()
+    return {"all_alerts": all_alerts} # Return corresponding alerts
 
 def create(alert):
   """

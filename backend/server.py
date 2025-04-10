@@ -72,9 +72,9 @@ async def test():
 
 # Endpoint to retrieve alerts matching a search_term
 @app.get("/alerts")
-async def get_alert(search_term):
+async def search_alerts(search_term):
     try:
-        return alerts.get(search_term)
+        return alerts.search(search_term)
     except Exception:
         raise HTTPException(status_code=404, detail="No matching alerts found")
 
