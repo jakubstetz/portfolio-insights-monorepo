@@ -7,7 +7,9 @@ function AlertsManager(alerts) {
   return (
     <div id="alerts-manager">
       {alerts.map(alert => <Alert key={alert[0]} alert={alert} />)}
-      {/* More Alert components would be mapped here in real usage */}
+      <div id="new-alert-button">
+        <p>Create New Alert</p>
+      </div>
     </div>
   );
 }
