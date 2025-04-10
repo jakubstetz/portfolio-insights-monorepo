@@ -4,6 +4,7 @@ import viteLogo from './assets/vite.svg'
 import Header from './Header/Header'
 import ChartArea from './ChartArea/ChartArea'
 import AlertsArea from './AlertsArea/AlertsArea'
+import AlertCreationPrompt from './AlertCreationPrompt/AlertCreationPrompt'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <ChartArea />
         <AlertsArea />
       </div>
+      <AlertCreationPrompt />
     </>
   )
 }
