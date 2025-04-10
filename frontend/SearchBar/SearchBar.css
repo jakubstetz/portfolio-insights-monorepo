@@ -1,9 +1,44 @@
-.search-bar input {
+form {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+#search {
   width: 100%;
-  padding: 10px;
   background-color: #111827;
-  border: 1px solid #374151;
   color: #e0e0e0;
-  border-radius: 4px;
-  margin-bottom: 20px;
+  flex: 1;
+  padding: 8px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border: 1px solid #374151;
+}
+
+button {
+  width: 100px;
+  background-color: #2b3b50;    /* dark slate with blue tint */
+  color: #dbeafe;               /* soft light blue text */
+  border: 1px solid #3b4c63;    /* slightly cool border */
+  padding: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 0 6px 3px rgba(147, 197, 253, 0.11); /* faint blue glow */
+}
+
+button:hover {
+  background-color: #3b4f67;    /* brighter blue-slate hover */
+  border-color: #5b6b84;
+}
+
+button:active {
+  background-color: #243346;    /* pressed look */
+  border-color: #4b5b6d;
+  transition: background-color 0s;
+}
+
+button:focus {
+  outline: none;
 }
