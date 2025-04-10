@@ -7,13 +7,20 @@ function ChartArea() {// Use user input in SearchBar component to retrieve stock
   const [chartData, setChartData] = useState('')
 
   const searchHandler = ticker_searched => {
-    setChartData(ticker_searched)
-  }
+    const trimmed = ticker_searched.trim().toLowerCase();
+    const isValidTicker = /^$|^[a-z]{1,10}$/.test(trimmed);
+  
+    if (!isValidTicker) {
+      setChartData('')
+    } else {
+      setChartData(trimmed.toUpperCase())
+    }
+  };
 
   return (
     <div id="chart-area">
       <SearchBar searchHandler={searchHandler} />
-      <Chart data={chartData} />
+      <Chart chartData={chartData} />
     </div>
   );
 }

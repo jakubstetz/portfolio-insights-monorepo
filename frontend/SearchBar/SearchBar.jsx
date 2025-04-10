@@ -6,7 +6,6 @@ function SearchBar({searchHandler}) {
 
   const submitHandler = e => {
     e.preventDefault(); // Prevent browser from reloading on submit
-    setInput(input.toUpperCase())
     searchHandler(input);
   };
 
@@ -14,9 +13,7 @@ function SearchBar({searchHandler}) {
     <form id="search-bar" onSubmit={submitHandler}>
       <input
         id="search"
-        maxlength="10"
-        pattern="^$|^[A-Za-z]{1,10}$"
-        title="Invalid ticker!"
+        maxLength="10"
         value={input}
         onChange={e => setInput(e.target.value)}
         placeholder="Search for a stock..." />

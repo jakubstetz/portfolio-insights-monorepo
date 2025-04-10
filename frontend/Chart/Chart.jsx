@@ -1,9 +1,9 @@
 import './Chart.css';
 
-function Chart({data}) {
+function Chart({chartData}) {
   return (
     <div id="chart">
-      <p>{data}</p>
+      <p>{chartData ? chartData : 'Ticker not found'}</p>
     </div>
   );
 }
