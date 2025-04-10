@@ -1,5 +1,4 @@
 #chart {
-  height: 100%;
   background-color: #111827;
   border: 1px dashed #00ffff;
   border-radius: 6px;
@@ -8,4 +7,5 @@
   justify-content: center;
   color: #00ffff;
   padding: 20px;
+  flex: 1;
 }

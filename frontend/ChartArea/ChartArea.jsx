@@ -2,13 +2,13 @@ import './ChartArea.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Chart from '../Chart/Chart';
 
-function ChartContainer() {
+function ChartArea() {
   return (
-    <div id="chart-container">
+    <div id="chart-area">
       <SearchBar />
       <Chart />
     </div>
   );
 }
 
-export default ChartContainer;
+export default ChartArea;

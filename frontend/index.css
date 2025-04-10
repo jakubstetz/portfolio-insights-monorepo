@@ -1,29 +1,42 @@
-:root {
+:root { /* root pseudo-class */
+  /* Fonts */
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+  /* Colors */
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 }
 
+body, html { /* Lock app within the viewport, preventing scrolling */
+  height: 100%;
+  overflow: hidden;
+}
+
+#root { /* Container with id root, where React is rendered */
+  /* Positioning */
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-area {
+  display: flex;
+  flex: 1;
+  overflow-y: hidden;
+}
 
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 h1 {
