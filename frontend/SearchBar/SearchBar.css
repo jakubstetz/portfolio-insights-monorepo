@@ -28,17 +28,17 @@ form button {
   box-shadow: 0 0 6px 3px rgba(147, 197, 253, 0.11); /* faint blue glow */
 }
 
-button:hover {
+form button:hover {
   background-color: #3b4f67;    /* brighter blue-slate hover */
   border-color: #5b6b84;
 }
 
-button:active {
+form button:active {
   background-color: #243346;    /* pressed look */
   border-color: #4b5b6d;
-  transition: background-color 0s;
+  transition: background-color 0s, border-color 0s;
 }
 
-button:focus {
+form button:focus {
   outline: none;
 }
