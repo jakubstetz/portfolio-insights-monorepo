@@ -9,13 +9,14 @@ Start the server by running the shell command:
 fastapi dev server.py
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import alerts
 import database
 import market
 from pydantic import BaseModel
 from datetime import datetime
+from typing import List, Dict
 
 class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
@@ -72,13 +73,13 @@ async def test():
 ##### Manage Stock Price Alerts #####
 
 # Endpoint to retrieve alerts matching a search_term
-@app.get("/alerts")
+@app.get("/alerts", response_model=List[Dict], status_code=status.HTTP_201_CREATED)
 async def search_alerts(search_term = ''):
     try:
         return alerts.search(search_term)
     except Exception as e:
         print(e)
-        raise HTTPException(status_code=404, detail="No matching alerts found")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # Endpoint to create a new alert
 @app.post("/alerts")
