@@ -1,10 +1,6 @@
 import './AlertCreationPrompt.css';
 
-function AlertCreationPrompt() {
-
-  const closeHandler = () => {
-    console.log('Close event triggered.')
-  }
+function AlertCreationPrompt({onClose}) {
 
   const submitHandler = () => {
     console.log('Submit event triggered.')
@@ -14,7 +10,7 @@ function AlertCreationPrompt() {
     <div id='blur'>
       <div id='alert-creation-prompt'>
         <h2>Create New Alert</h2>
-        <button id="close-button" onClick={closeHandler} type="button">X</button>
+        <button id="close-button" onClick={onClose} type="button">X</button>
         <form onSubmit={submitHandler}>
           <div>
             <label htmlFor="ticker">Ticker:</label>

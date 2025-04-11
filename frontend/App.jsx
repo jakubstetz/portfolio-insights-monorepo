@@ -7,14 +7,18 @@ import AlertsArea from './AlertsArea/AlertsArea'
 import AlertCreationPrompt from './AlertCreationPrompt/AlertCreationPrompt'
 
 function App() {
+  const [showAlertCreationPrompt, setShowAlertCreationPrompt] = useState(false)
+
   return (
     <>
       <Header />
       <div id='main-area'>
         <ChartArea />
-        <AlertsArea />
+        <AlertsArea onNewAlert={() => setShowAlertCreationPrompt(true)}/>
       </div>
-      <AlertCreationPrompt />
+      {showAlertCreationPrompt && (
+        <AlertCreationPrompt onClose={() => setShowAlertCreationPrompt(false)}/>
+      )}
     </>
   )
 }

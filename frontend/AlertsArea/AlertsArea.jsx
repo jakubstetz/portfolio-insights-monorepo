@@ -3,7 +3,7 @@ import './AlertsArea.css';
 import SearchBar from '../SearchBar/SearchBar';
 import AlertsManager from '../AlertsManager/AlertsManager';
 
-function AlertsArea() {
+function AlertsArea({onNewAlert}) {
   const [alerts, setAlerts] = useState('')
 
   const searchHandler = async search_term => {
@@ -22,7 +22,7 @@ function AlertsArea() {
   return (
     <div id="alerts-area">
       <SearchBar searchHandler={searchHandler} />
-      <AlertsManager alerts={alerts}/>
+      <AlertsManager onNewAlert={onNewAlert} alerts={alerts}/>
     </div>
   );
 }
