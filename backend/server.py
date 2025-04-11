@@ -58,7 +58,8 @@ async def root():
 async def get_stock_info(ticker):
     try:
         return market.stock_info(ticker)
-    except Exception:
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
 
 # Flexible endpoint to conveniently test whatever functionality I want
@@ -75,7 +76,8 @@ async def test():
 async def search_alerts(search_term = ''):
     try:
         return alerts.search(search_term)
-    except Exception:
+    except Exception as e:
+        print(e)
         raise HTTPException(status_code=404, detail="No matching alerts found")
 
 # Endpoint to create a new alert
