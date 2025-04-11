@@ -72,7 +72,7 @@ async def test():
 
 # Endpoint to retrieve alerts matching a search_term
 @app.get("/alerts")
-async def search_alerts(search_term):
+async def search_alerts(search_term = ''):
     try:
         return alerts.search(search_term)
     except Exception:
