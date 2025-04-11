@@ -13,8 +13,9 @@ def search(search_term):
   ilike_argument = '%' + search_term + '%' # Wildcards (%) used so that substring can be prefix or suffix, or contained within a string
   with database.connection.cursor() as cur:
     cur.execute('SELECT * FROM alerts WHERE ticker ILIKE %s;', (ilike_argument,))
+    keys = [column[0] for column in cur.description] # Column headers associated with retrieved data
     all_alerts = cur.fetchall()
-    return all_alerts # Return corresponding alerts IS THIS GOOD FORM OR SHOULD THERE BE JSON
+    return [dict(zip(keys, row)) for row in all_alerts] # Return corresponding alerts in JSON-friendly format
 
 def create(alert):
   """
