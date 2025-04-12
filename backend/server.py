@@ -16,13 +16,13 @@ import database
 import market
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
-    expiration_time: datetime # ISO 8601 string will be automatically parsed
+    expiration_time: Optional[datetime] # ISO 8601 string will be automatically parsed
 
 app = FastAPI()
 
