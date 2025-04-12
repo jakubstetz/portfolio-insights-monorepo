@@ -76,11 +76,7 @@ async def test():
 @app.get("/alerts", response_model=List[Dict])
 async def search_alerts(search_term = ''):
     try:
-        alert_id = alerts.search(search_term)
-        return {
-            "message": "Alert created successfully",
-            "new_alert_id": alert_id
-        }
+        return alerts.search(search_term)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -89,7 +85,11 @@ async def search_alerts(search_term = ''):
 @app.post("/alerts", status_code=status.HTTP_201_CREATED)
 def create_alert(alert: Alert):
     try:
-        return alerts.create(alert)
+        alert_id = alerts.create(alert)
+        return {
+            "message": "Alert created successfully",
+            "new_alert_id": alert_id
+        }
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Internal server error")
