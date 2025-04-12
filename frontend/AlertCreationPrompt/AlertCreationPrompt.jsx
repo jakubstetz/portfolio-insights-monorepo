@@ -12,8 +12,6 @@ function AlertCreationPrompt({onClose, setAlertsRefresh}) {
 
   const submitHandler = async e => {
     e.preventDefault();
-    console.log('Form payload:', form);
-    console.log('Parsed price:', parseFloat(form.price));
     try {
       const api_response = await fetch('http://127.0.0.1:8000/alerts', {
         method: 'POST',
