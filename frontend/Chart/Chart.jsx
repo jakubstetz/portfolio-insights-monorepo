@@ -1,8 +1,12 @@
-import './Chart.css';
+import "./Chart.css";
 
 function Chart({ chartData }) {
   if (!chartData || chartData.detail === "Ticker not found") {
-    return <div id="chart"><p>Ticker not found</p></div>;
+    return (
+      <div id="chart">
+        <p>Ticker not found</p>
+      </div>
+    );
   }
 
   return (

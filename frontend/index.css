@@ -1,4 +1,5 @@
-:root { /* root pseudo-class */
+:root {
+  /* root pseudo-class */
   /* Fonts */
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -10,12 +11,15 @@
   background-color: #242424;
 }
 
-body, html { /* Lock app within the viewport, preventing scrolling */
+body,
+html {
+  /* Lock app within the viewport, preventing scrolling */
   height: 100%;
   overflow: hidden;
 }
 
-#root { /* Container with id root, where React is rendered */
+#root {
+  /* Container with id root, where React is rendered */
   /* Positioning */
   height: 100%;
   max-height: 100%;
@@ -37,7 +41,10 @@ body, html { /* Lock app within the viewport, preventing scrolling */
   width: 400px;
   text-align: center;
   cursor: pointer;
-  transition: color 0.4s ease, background-color 0.4s ease, border-color 0.3s ease;
+  transition:
+    color 0.4s ease,
+    background-color 0.4s ease,
+    border-color 0.3s ease;
 }
 
 #new-alert-button:hover {
@@ -47,9 +54,11 @@ body, html { /* Lock app within the viewport, preventing scrolling */
 }
 
 #new-alert-button:active {
-  background-color: #243346;    /* pressed look */
-  border: 2px dashed rgba(0, 160, 160, 0.90);
-  transition: background-color 0s, border-color 0s;
+  background-color: #243346; /* pressed look */
+  border: 2px dashed rgba(0, 160, 160, 0.9);
+  transition:
+    background-color 0s,
+    border-color 0s;
 }
 
 a {

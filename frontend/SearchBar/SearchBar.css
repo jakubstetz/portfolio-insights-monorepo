@@ -16,27 +16,31 @@ form {
 
 form button {
   width: 100px;
-  background-color: #2b3b50;    /* dark slate with blue tint */
-  color: #dbeafe;               /* soft light blue text */
-  border: 1px solid #3b4c63;    /* slightly cool border */
+  background-color: #2b3b50; /* dark slate with blue tint */
+  color: #dbeafe; /* soft light blue text */
+  border: 1px solid #3b4c63; /* slightly cool border */
   padding: 8px;
   font-weight: 500;
   cursor: pointer;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
   box-shadow: 0 0 6px 3px rgba(147, 197, 253, 0.11); /* faint blue glow */
 }
 
 form button:hover {
-  background-color: #3b4f67;    /* brighter blue-slate hover */
+  background-color: #3b4f67; /* brighter blue-slate hover */
   border-color: #5b6b84;
 }
 
 form button:active {
-  background-color: #243346;    /* pressed look */
+  background-color: #243346; /* pressed look */
   border-color: #4b5b6d;
-  transition: background-color 0s, border-color 0s;
+  transition:
+    background-color 0s,
+    border-color 0s;
 }
 
 form button:focus {

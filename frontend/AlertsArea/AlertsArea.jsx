@@ -1,58 +1,76 @@
-import { useState, useEffect } from 'react'
-import './AlertsArea.css';
-import SearchBar from '../SearchBar/SearchBar';
-import AlertsManager from '../AlertsManager/AlertsManager';
+import { useState, useEffect } from "react";
+import "./AlertsArea.css";
+import SearchBar from "../SearchBar/SearchBar";
+import AlertsManager from "../AlertsManager/AlertsManager";
 
-function AlertsArea({onNewAlert, alertsRefresh, alertsSearchInput, setAlertsSearchInput}) {
-  const [alerts, setAlerts] = useState([])
+function AlertsArea({
+  onNewAlert,
+  alertsRefresh,
+  alertsSearchInput,
+  setAlertsSearchInput,
+}) {
+  const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     // Load alerts on mount and when refresh flag changes
-    searchHandler('')
+    searchHandler("");
   }, [alertsRefresh]);
 
-  const deleteHandler = async alert_id => {
+  const deleteHandler = async (alert_id) => {
     try {
-      const api_response = await fetch(`http://127.0.0.1:8000/alerts?id=${alert_id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const api_response = await fetch(
+        `http://127.0.0.1:8000/alerts?id=${alert_id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        },
+      );
 
       if (api_response.ok) {
         console.log(`Alert #${alert_id} deleted.`);
         // Clear search input
-        setAlertsSearchInput('')
-        searchHandler('') // Refresh displayed list of alerts
+        setAlertsSearchInput("");
+        searchHandler(""); // Refresh displayed list of alerts
       } else {
         const error = await api_response.json();
-        console.error('Failed to delete alert:', error.detail);
+        console.error("Failed to delete alert:", error.detail);
       }
     } catch (err) {
-      console.error('Error:', err);
+      console.error("Error:", err);
     }
-  }
+  };
 
-  const searchHandler = async search_term => {
+  const searchHandler = async (search_term) => {
     const trimmed = search_term.trim().toUpperCase();
     const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
-  
+
     if (!isValidTicker) {
-      setAlerts('')
+      setAlerts("");
     } else {
       try {
-        const api_response = await fetch(`http://127.0.0.1:8000/alerts?search_term=${trimmed}`);
+        const api_response = await fetch(
+          `http://127.0.0.1:8000/alerts?search_term=${trimmed}`,
+        );
         const retrieved_alerts = await api_response.json();
         setAlerts(retrieved_alerts);
       } catch (err) {
-        console.error(err)
+        console.error(err);
       }
     }
   };
 
   return (
     <div id="alerts-area">
-      <SearchBar searchHandler={searchHandler} alertsSearchInput={alertsSearchInput} setAlertsSearchInput={setAlertsSearchInput} />
-      <AlertsManager onNewAlert={onNewAlert} alerts={alerts} deleteHandler={deleteHandler} />
+      <SearchBar
+        searchHandler={searchHandler}
+        alertsSearchInput={alertsSearchInput}
+        setAlertsSearchInput={setAlertsSearchInput}
+      />
+      <AlertsManager
+        onNewAlert={onNewAlert}
+        alerts={alerts}
+        deleteHandler={deleteHandler}
+      />
     </div>
   );
 }
