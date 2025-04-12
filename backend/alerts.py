@@ -21,11 +21,16 @@ def create(alert):
   """
   Create a new stock price alert. Note that the alert id will be automatically created in the database using SERIAL.
   """
+  # Transform input in preparation for database entry
+  alert = alert.dict()
+  if alert['expiration_time']: alert['expired'] = False
+  else: alert['expired'] = None
+
+  # Create new alert in database
   with database.connection.cursor() as cur:
-    alert = alert.dict()
     cur.execute('''
-                INSERT INTO alerts (ticker, price, direction, expiration_time)
-                VALUES (%(ticker)s, %(price)s, %(direction)s, %(expiration_time)s) RETURNING alert_id;
+                INSERT INTO alerts (ticker, price, direction, expired, expiration_time)
+                VALUES (%(ticker)s, %(price)s, %(direction)s, %(expired)s, %(expiration_time)s) RETURNING alert_id;
                 ''', alert)
     database.connection.commit()
     return cur.fetchone()[0] # Return id for new alert
