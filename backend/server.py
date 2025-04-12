@@ -99,4 +99,12 @@ def create_alert(alert: Alert):
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
 def delete_alert(id):
-    return f"Alert {id} deleted." if alerts.delete(id) else 'Error!'
+    try:
+        alerts.delete(id)
+        return {
+            "message": "Alert deleted successfully",
+            "deleted_alert_id": id
+        }
+    except Exception as e:
+        print(e)
+        return HTTPException(status_code=500, detail="Internal server error")
