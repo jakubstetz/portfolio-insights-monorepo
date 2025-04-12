@@ -7,17 +7,7 @@ function AlertsArea({onNewAlert}) {
   const [alerts, setAlerts] = useState([])
 
   useEffect(() => { // Load all alerts on mount
-    const fetchAlerts = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:8000/alerts');
-        const data = await response.json();
-        setAlerts(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-  
-    fetchAlerts();
+    searchHandler('')
   }, []);
 
   const searchHandler = async search_term => {
