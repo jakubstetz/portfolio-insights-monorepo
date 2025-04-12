@@ -42,7 +42,6 @@ def delete(id):
   with database.connection.cursor() as cur:
     cur.execute("DELETE FROM alerts WHERE alert_id = %s RETURNING alert_id;", (id,))
     database.connection.commit()
-    return cur.fetchone()[0] # Return id for deleted alert
 
 def evaluate():
   """
