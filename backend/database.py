@@ -9,10 +9,7 @@ for connection string format.
 """
 
 import os
-from dotenv import load_dotenv
 import psycopg as postgres
-
-load_dotenv()  # Load .env variables
 
 # Initialize to satisfy module scope before first use
 connection = None

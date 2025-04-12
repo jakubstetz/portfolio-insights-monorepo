@@ -17,6 +17,12 @@ import market
 from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+cors_origins = os.getenv("CORS_ORIGINS").split(",")
 
 
 # Used in POST /alerts for automatic validation and parsing
@@ -31,8 +37,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    # "*" SHOULD ONLY BE USED IN DEVELOPMENT, CHANGE TO FRONTEND ORIGIN IN PRODUCTION
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
