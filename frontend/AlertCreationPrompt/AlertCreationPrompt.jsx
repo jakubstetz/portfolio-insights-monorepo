@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './AlertCreationPrompt.css';
 
-function AlertCreationPrompt({onClose}) {
+function AlertCreationPrompt({onClose, setAlertsRefresh}) {
 
   const [form, setForm] = useState({
     ticker: '',
@@ -29,6 +29,7 @@ function AlertCreationPrompt({onClose}) {
       if (api_response.ok) {
         const data = await api_response.json();
         console.log('Alert created:', data);
+        setAlertsRefresh(prev => !prev); // Trigger refresh of displayed alerts
         onClose(); // Close prompt after success
       } else {
         const error = await api_response.json();

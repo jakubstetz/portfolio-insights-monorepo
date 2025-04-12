@@ -3,12 +3,12 @@ import './AlertsArea.css';
 import SearchBar from '../SearchBar/SearchBar';
 import AlertsManager from '../AlertsManager/AlertsManager';
 
-function AlertsArea({onNewAlert}) {
+function AlertsArea({onNewAlert, alertsRefresh}) {
   const [alerts, setAlerts] = useState([])
 
-  useEffect(() => { // Load all alerts on mount
+  useEffect(() => { // Load all alerts on mount and on refresh signal
     searchHandler('')
-  }, []);
+  }, [alertsRefresh]);
 
   const searchHandler = async search_term => {
     const trimmed = search_term.trim().toUpperCase();
