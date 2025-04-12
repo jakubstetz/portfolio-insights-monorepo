@@ -1,25 +1,24 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import Header from './Header/Header'
+import ChartArea from './ChartArea/ChartArea'
+import AlertsArea from './AlertsArea/AlertsArea'
+import AlertCreationPrompt from './AlertCreationPrompt/AlertCreationPrompt'
 
 function App() {
+  const [showAlertCreationPrompt, setShowAlertCreationPrompt] = useState(false)
+  const [alertsRefresh, setAlertsRefresh] = useState(false) // Toggle whenever I want to refresh displayed alerts, i.e. when a new alert is created
+  const [alertsSearchInput, setAlertsSearchInput] = useState(''); // AlertsArea search bar input
+
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <Header />
+      <div id='main-area'>
+        <ChartArea />
+        <AlertsArea onNewAlert={() => setShowAlertCreationPrompt(true)} alertsRefresh={alertsRefresh} alertsSearchInput={alertsSearchInput} setAlertsSearchInput={setAlertsSearchInput} />
       </div>
-      <h1>Portfolio Insights</h1>
-      <div className="card">
-        <p>
-          This API frontend will be built using Vite and React. Coming soon...
-        </p>
-      </div>
+      {showAlertCreationPrompt && (
+        <AlertCreationPrompt onClose={() => setShowAlertCreationPrompt(false)} setAlertsRefresh={setAlertsRefresh} setAlertsSearchInput={setAlertsSearchInput} />
+      )}
     </>
   )
 }

@@ -17,6 +17,10 @@ a {
   cursor: pointer;
 }
 
+input:focus {
+  outline: none; /* Prevent outlines when typing in input fields */
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -33,5 +37,5 @@ table {
 .image-container img {
   display: block;
   max-width: 100%;
-  height: auto; /* Scale height proportionately with width. Use width: auto to instead scale width proportionately with height. */
+  height: auto; /* Scale height proportionately with width. Use width: auto to instead scale width proportionately with height */
 }

@@ -1,0 +1,7 @@
+#chart-area {
+  background-color: #1f2937;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

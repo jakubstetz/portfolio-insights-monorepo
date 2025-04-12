@@ -1,0 +1,19 @@
+.alert {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e0e0e0;
+  width: 400px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: #ff4c4c;
+  cursor: pointer;
+  font-weight: bold;
+}

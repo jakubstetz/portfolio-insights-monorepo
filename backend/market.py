@@ -12,7 +12,12 @@ def stock_info(ticker):
   """
   Retrieve stock information.
   """
-  return yf.Ticker(ticker).info
+  info = yf.Ticker(ticker).fast_info
+  return {
+            "ticker": ticker.upper(),
+            "price": info["lastPrice"],
+            "currency": info.get("currency", "USD")
+        }
 
 def stock_price(ticker):
   """

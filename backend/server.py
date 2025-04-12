@@ -9,20 +9,29 @@ Start the server by running the shell command:
 fastapi dev server.py
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 import alerts
 import database
 import market
 from pydantic import BaseModel
 from datetime import datetime
-
-app = FastAPI()
+from typing import List, Dict, Optional
 
 class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
-    expiration_time: datetime # ISO 8601 string will be automatically parsed
+    expiration_time: Optional[datetime] # ISO 8601 string will be automatically parsed
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # "*" SHOULD ONLY BE USED IN DEVELOPMENT, CHANGE TO FRONTEND ORIGIN IN PRODUCTION
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #------------------------------------------------------------------------#
 
@@ -47,10 +56,14 @@ def shutdown():
 async def root():
     return 'Hello World'
 
-# Endpoint to return basic stock information, mostly for testing
-@app.get("/info/{ticker}")
-async def get_stock_info(ticker = 'SPY'):
-    return market.stock_info(ticker)
+# Endpoint to return stock price history
+@app.get("/stocks")
+async def get_stock_info(ticker):
+    try:
+        return market.stock_info(ticker)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Ticker not found")
 
 # Flexible endpoint to conveniently test whatever functionality I want
 @app.get("/test")
@@ -61,19 +74,37 @@ async def test():
 
 ##### Manage Stock Price Alerts #####
 
-# Endpoint to retrieve an alert by id
-@app.get("/alerts")
-def get_alert(id):
-    alert = alerts.get(id)
-    return alert or 'Error!'
+# Endpoint to retrieve alerts matching a search_term
+@app.get("/alerts", response_model=List[Dict])
+async def search_alerts(search_term = ''):
+    try:
+        return alerts.search(search_term)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # Endpoint to create a new alert
-@app.post("/alerts")
+@app.post("/alerts", status_code=status.HTTP_201_CREATED)
 def create_alert(alert: Alert):
-    insertion_id = alerts.create(alert)
-    return f'Success! Alert created with id = {insertion_id}' if insertion_id else 'Error!'
+    try:
+        alert_id = alerts.create(alert)
+        return {
+            "message": "Alert created successfully",
+            "new_alert_id": alert_id
+        }
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
 def delete_alert(id):
-    return f"Alert {id} deleted." if alerts.delete(id) else 'Error!'
+    try:
+        alerts.delete(id)
+        return {
+            "message": "Alert deleted successfully",
+            "deleted_alert_id": id
+        }
+    except Exception as e:
+        print(e)
+        return HTTPException(status_code=500, detail="Internal server error")
