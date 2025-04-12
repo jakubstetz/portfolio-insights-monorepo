@@ -27,9 +27,13 @@ function AlertsArea({onNewAlert}) {
     if (!isValidTicker) {
       setAlerts('')
     } else {
-      const api_response = await fetch(`http://127.0.0.1:8000/alerts?search_term=${trimmed}`);
-      const retrieved_alerts = await api_response.json();
-      setAlerts(retrieved_alerts);
+      try {
+        const api_response = await fetch(`http://127.0.0.1:8000/alerts?search_term=${trimmed}`);
+        const retrieved_alerts = await api_response.json();
+        setAlerts(retrieved_alerts);
+      } catch (err) {
+        console.error(err)
+      }
     }
   };
 
