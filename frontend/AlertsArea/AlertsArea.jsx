@@ -3,7 +3,7 @@ import './AlertsArea.css';
 import SearchBar from '../SearchBar/SearchBar';
 import AlertsManager from '../AlertsManager/AlertsManager';
 
-function AlertsArea({onNewAlert, alertsRefresh}) {
+function AlertsArea({onNewAlert, alertsRefresh, alertsSearchInput, setAlertsSearchInput}) {
   const [alerts, setAlerts] = useState([])
 
   useEffect(() => { // Load all alerts on mount and on refresh signal
@@ -19,7 +19,8 @@ function AlertsArea({onNewAlert, alertsRefresh}) {
 
       if (api_response.ok) {
         console.log(`Alert #${alert_id} deleted.`);
-        searchHandler('') // Trigger refresh of displayed alerts
+        setAlertsSearchInput('')
+        searchHandler('') // Refresh displayed list of alerts
       } else {
         const error = await api_response.json();
         console.error('Failed to delete alert:', error.detail);
@@ -48,7 +49,7 @@ function AlertsArea({onNewAlert, alertsRefresh}) {
 
   return (
     <div id="alerts-area">
-      <SearchBar searchHandler={searchHandler} />
+      <SearchBar searchHandler={searchHandler} alertsSearchInput={alertsSearchInput} setAlertsSearchInput={setAlertsSearchInput} />
       <AlertsManager onNewAlert={onNewAlert} alerts={alerts} deleteHandler={deleteHandler} />
     </div>
   );
