@@ -13,16 +13,19 @@ import psycopg as postgres
 # Initialize to satisfy module scope before first use
 connection = None
 
+
 def init():
-  """
-  Open a connection to our portfolio_insights database on API startup.
-  """
-  global connection
-  connection = postgres.connect('host=localhost port=5432 dbname=portfolio_insights')
+    """
+    Open a connection to our portfolio_insights database on API startup.
+    """
+    global connection
+    connection = postgres.connect("host=localhost port=5432 dbname=portfolio_insights")
+
 
 def close():
-  """
-  Close database connection on API shutdown.
-  """
-  global connection
-  if connection: connection.close()
+    """
+    Close database connection on API shutdown.
+    """
+    global connection
+    if connection:
+        connection.close()
