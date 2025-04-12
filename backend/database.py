@@ -8,7 +8,11 @@ See: https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
 for connection string format.
 """
 
+import os
+from dotenv import load_dotenv
 import psycopg as postgres
+
+load_dotenv()  # Load .env variables
 
 # Initialize to satisfy module scope before first use
 connection = None
@@ -19,7 +23,12 @@ def init():
     Open a connection to our portfolio_insights database on API startup.
     """
     global connection
-    connection = postgres.connect("host=localhost port=5432 dbname=portfolio_insights")
+    host = os.getenv("DATABASE_HOST")
+    port = os.getenv("DATABASE_PORT")
+    dbname = os.getenv("DATABASE_NAME")
+
+    dsn = f"host={host} port={port} dbname={dbname}"
+    connection = postgres.connect(dsn)
 
 
 def close():
