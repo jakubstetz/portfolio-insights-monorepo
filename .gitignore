@@ -25,7 +25,7 @@ dist-ssr
 .qodo
 
 # Personal Additions
-venv
+.venv
 __pycache__
 ISSUE_TEMPLATE.md
 .env
