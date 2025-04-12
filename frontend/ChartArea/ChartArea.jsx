@@ -3,7 +3,8 @@ import './ChartArea.css';
 import SearchBar from '../SearchBar/SearchBar';
 import Chart from '../Chart/Chart';
 
-function ChartArea() {// Use user input in SearchBar component to retrieve stock price history
+// Uses SearchBar input to fetch and display stock info
+function ChartArea() {
   const [chartData, setChartData] = useState('')
 
   const searchHandler = async ticker_searched => {

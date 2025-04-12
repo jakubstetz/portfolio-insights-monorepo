@@ -6,7 +6,8 @@ import AlertsManager from '../AlertsManager/AlertsManager';
 function AlertsArea({onNewAlert, alertsRefresh, alertsSearchInput, setAlertsSearchInput}) {
   const [alerts, setAlerts] = useState([])
 
-  useEffect(() => { // Load all alerts on mount and on refresh signal
+  useEffect(() => {
+    // Load alerts on mount and when refresh flag changes
     searchHandler('')
   }, [alertsRefresh]);
 
@@ -19,6 +20,7 @@ function AlertsArea({onNewAlert, alertsRefresh, alertsSearchInput, setAlertsSear
 
       if (api_response.ok) {
         console.log(`Alert #${alert_id} deleted.`);
+        // Clear search input
         setAlertsSearchInput('')
         searchHandler('') // Refresh displayed list of alerts
       } else {

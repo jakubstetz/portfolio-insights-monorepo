@@ -4,6 +4,7 @@ function Alert({alert: {alert_id, ticker, price, direction, creation_time, updat
 
   return (
     <div className="alert">
+      {/* Format alert as: "TICKER > $PRICE" or "TICKER < $PRICE" */}
       <span>{ticker + (direction === 'above' ? ' > ' : ' < ') + '$' + price}</span>
       <button className="delete-button" onClick={() => deleteHandler(alert_id)} >Delete</button>
     </div>

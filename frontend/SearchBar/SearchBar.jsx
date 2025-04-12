@@ -3,7 +3,7 @@ import './SearchBar.css';
 
 function SearchBar({searchHandler, alertsSearchInput, setAlertsSearchInput}) {
   const submitHandler = e => {
-    e.preventDefault(); // Prevent browser from reloading on submit
+    e.preventDefault(); // Prevent page reload on form submit
     searchHandler(alertsSearchInput);
   };
 

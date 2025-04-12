@@ -27,7 +27,8 @@ function AlertCreationPrompt({onClose, setAlertsRefresh, setAlertsSearchInput}) 
       if (api_response.ok) {
         const data = await api_response.json();
         console.log('Alert created:', data);
-        setAlertsSearchInput(''); // Reset alerts search bar input
+        // Clear the search input
+        setAlertsSearchInput('');
         setAlertsRefresh(prev => !prev); // Trigger refresh of displayed alerts
         onClose(); // Close prompt after success
       } else {
@@ -40,6 +41,7 @@ function AlertCreationPrompt({onClose, setAlertsRefresh, setAlertsSearchInput}) 
   }
 
   const changeHandler = ({target: {name, value}}) => {
+    // Update form field on change
     setForm(prev => ({ ...prev, [name]: value }));
   };
 

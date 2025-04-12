@@ -72,7 +72,7 @@ h2 {
   text-align: center;
 }
 
-#blur { /* Blur out the rest of the app when alert creation prompt is up. */
+#blur { /* Dark overlay shown behind the alert creation prompt */
   position: fixed;
   display: flex;
   align-items: center;
