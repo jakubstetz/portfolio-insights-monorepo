@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./SearchBar.css";
 
-function SearchBar({ searchHandler, alertsSearchInput, setAlertsSearchInput }) {
+function SearchBar({ searchHandler, searchInput, setSearchInput }) {
   const submitHandler = (e) => {
     e.preventDefault(); // Prevent page reload on form submit
-    searchHandler(alertsSearchInput);
+    searchHandler(searchInput);
   };
 
   return (
@@ -12,8 +12,8 @@ function SearchBar({ searchHandler, alertsSearchInput, setAlertsSearchInput }) {
       <input
         id="search"
         maxLength="10"
-        value={alertsSearchInput}
-        onChange={(e) => setAlertsSearchInput(e.target.value)}
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
         placeholder="Search for a stock..."
       />
       <button type="submit">Search</button>

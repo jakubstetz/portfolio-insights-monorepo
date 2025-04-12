@@ -6,6 +6,7 @@ import Chart from "../Chart/Chart";
 // Uses SearchBar input to fetch and display stock info
 function ChartArea({ apiUrl }) {
   const [chartData, setChartData] = useState("");
+  const [chartSearchInput, setChartSearchInput] = useState("");
 
   const searchHandler = async (ticker_searched) => {
     const trimmed = ticker_searched.trim().toUpperCase();
@@ -22,7 +23,11 @@ function ChartArea({ apiUrl }) {
 
   return (
     <div id="chart-area">
-      <SearchBar searchHandler={searchHandler} />
+      <SearchBar
+        searchHandler={searchHandler}
+        searchInput={chartSearchInput}
+        setSearchInput={setChartSearchInput}
+      />
       <Chart chartData={chartData} />
     </div>
   );

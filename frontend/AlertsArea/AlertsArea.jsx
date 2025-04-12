@@ -61,8 +61,8 @@ function AlertsArea({
     <div id="alerts-area">
       <SearchBar
         searchHandler={searchHandler}
-        alertsSearchInput={alertsSearchInput}
-        setAlertsSearchInput={setAlertsSearchInput}
+        searchInput={alertsSearchInput}
+        setSearchInput={setAlertsSearchInput}
       />
       <AlertsManager
         onNewAlert={onNewAlert}
