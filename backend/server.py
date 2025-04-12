@@ -73,19 +73,26 @@ async def test():
 ##### Manage Stock Price Alerts #####
 
 # Endpoint to retrieve alerts matching a search_term
-@app.get("/alerts", response_model=List[Dict], status_code=status.HTTP_201_CREATED)
+@app.get("/alerts", response_model=List[Dict])
 async def search_alerts(search_term = ''):
     try:
-        return alerts.search(search_term)
+        alert_id = alerts.search(search_term)
+        return {
+            "message": "Alert created successfully",
+            "new_alert_id": alert_id
+        }
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Internal server error")
 
 # Endpoint to create a new alert
-@app.post("/alerts")
+@app.post("/alerts", status_code=status.HTTP_201_CREATED)
 def create_alert(alert: Alert):
-    insertion_id = alerts.create(alert)
-    return f'Success! Alert created with id = {insertion_id}' if insertion_id else 'Error!'
+    try:
+        return alerts.create(alert)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 # Endpoint to delete an existing alert by id
 @app.delete("/alerts")
