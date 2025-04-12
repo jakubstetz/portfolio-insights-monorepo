@@ -1,11 +1,11 @@
 import './Alert.css';
 
-function Alert({alert: {alert_id, ticker, price, direction, creation_time, update_time, triggered, triggered_time, expired, expiration_time}}) {
+function Alert({alert: {alert_id, ticker, price, direction, creation_time, update_time, triggered, triggered_time, expired, expiration_time}, deleteHandler}) {
 
   return (
     <div className="alert">
       <span>{ticker + (direction === 'above' ? ' > ' : ' < ') + '$' + price}</span>
-      <button className="delete-button">Delete</button>
+      <button className="delete-button" onClick={() => deleteHandler(alert_id)} >Delete</button>
     </div>
   );
 }
