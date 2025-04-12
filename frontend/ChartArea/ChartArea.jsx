@@ -4,7 +4,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import Chart from "../Chart/Chart";
 
 // Uses SearchBar input to fetch and display stock info
-function ChartArea() {
+function ChartArea({ apiUrl }) {
   const [chartData, setChartData] = useState("");
 
   const searchHandler = async (ticker_searched) => {
@@ -14,9 +14,7 @@ function ChartArea() {
     if (!isValidTicker) {
       setChartData("");
     } else {
-      const api_response = await fetch(
-        `http://127.0.0.1:8000/stocks?ticker=${trimmed}`,
-      );
+      const api_response = await fetch(`${apiUrl}/stocks?ticker=${trimmed}`);
       const stock_data = await api_response.json();
       setChartData(stock_data);
     }

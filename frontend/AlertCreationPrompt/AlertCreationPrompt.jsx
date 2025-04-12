@@ -5,6 +5,7 @@ function AlertCreationPrompt({
   onClose,
   setAlertsRefresh,
   setAlertsSearchInput,
+  apiUrl,
 }) {
   const [form, setForm] = useState({
     ticker: "",
@@ -16,7 +17,7 @@ function AlertCreationPrompt({
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const api_response = await fetch("http://127.0.0.1:8000/alerts", {
+      const api_response = await fetch(`${apiUrl}/alerts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

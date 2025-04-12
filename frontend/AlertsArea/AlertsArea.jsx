@@ -8,6 +8,7 @@ function AlertsArea({
   alertsRefresh,
   alertsSearchInput,
   setAlertsSearchInput,
+  apiUrl,
 }) {
   const [alerts, setAlerts] = useState([]);
 
@@ -18,13 +19,10 @@ function AlertsArea({
 
   const deleteHandler = async (alert_id) => {
     try {
-      const api_response = await fetch(
-        `http://127.0.0.1:8000/alerts?id=${alert_id}`,
-        {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      const api_response = await fetch(`${apiUrl}/alerts?id=${alert_id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
 
       if (api_response.ok) {
         console.log(`Alert #${alert_id} deleted.`);
@@ -49,7 +47,7 @@ function AlertsArea({
     } else {
       try {
         const api_response = await fetch(
-          `http://127.0.0.1:8000/alerts?search_term=${trimmed}`,
+          `${apiUrl}/alerts?search_term=${trimmed}`,
         );
         const retrieved_alerts = await api_response.json();
         setAlerts(retrieved_alerts);
