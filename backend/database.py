@@ -1,13 +1,17 @@
 """
-This file provides functions for opening and closing a database connection. The purpose of this file is to allow for easy use of FastAPI lifestyle events to open a database connection on API startup and close the connection on API shutdown rather than opening and closing a database connectiaon with every API request.
+Provides functions for opening and closing a PostgreSQL connection.
 
-Go to the following link for information about the PostgreSQL connection string, which is the single argument that's used in the connect() call below:
-https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
+Used with FastAPI lifecycle events to open the connection on API startup and close it on shutdown,
+instead of reconnecting on every request.
+
+See: https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
+for connection string format.
 """
 
 import psycopg as postgres
 
-connection = None # Initialized for proper compile
+# Initialize to satisfy module scope before first use
+connection = None
 
 def init():
   """

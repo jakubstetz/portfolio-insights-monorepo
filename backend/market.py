@@ -1,8 +1,8 @@
 """
-Development begun using AlgoTrading101 Blog's "yfinance Library – A Complete Guide" article as a reference:
+Started using AlgoTrading101's “yfinance Library – A Complete Guide” as a reference:
 https://algotrading101.com/learn/yfinance-guide/
 
-Full yfinance documentation available here:
+Official documentation:
 https://yfinance-python.org/
 """
 

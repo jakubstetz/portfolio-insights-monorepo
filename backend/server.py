@@ -18,7 +18,8 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional
 
-class Alert(BaseModel): # Used for easier alert creation in alerts POST route with automatic type validation
+# Used in POST /alerts for automatic validation and parsing
+class Alert(BaseModel):
     ticker: str # 1-10 characters, enforced in database
     price: float
     direction: str # 'above' or 'below'
@@ -28,7 +29,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # "*" SHOULD ONLY BE USED IN DEVELOPMENT, CHANGE TO FRONTEND ORIGIN IN PRODUCTION
+    # "*" SHOULD ONLY BE USED IN DEVELOPMENT, CHANGE TO FRONTEND ORIGIN IN PRODUCTION
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -51,7 +53,7 @@ def shutdown():
 
 ##### General #####
 
-# Root endpoint
+# Health check / root
 @app.get('/')
 async def root():
     return 'Hello World'
@@ -65,7 +67,7 @@ async def get_stock_info(ticker):
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
 
-# Flexible endpoint to conveniently test whatever functionality I want
+# Temporary endpoint for manual testing
 @app.get("/test")
 async def test():
     return alerts.evaluate()
@@ -74,7 +76,7 @@ async def test():
 
 ##### Manage Stock Price Alerts #####
 
-# Endpoint to retrieve alerts matching a search_term
+# Get alerts matching optional search_term
 @app.get("/alerts", response_model=List[Dict])
 async def search_alerts(search_term = ''):
     try:
@@ -96,7 +98,7 @@ def create_alert(alert: Alert):
         print(e)
         raise HTTPException(status_code=500, detail="Internal server error")
 
-# Endpoint to delete an existing alert by id
+# Delete alert by ID (query parameter)
 @app.delete("/alerts")
 def delete_alert(id):
     try:

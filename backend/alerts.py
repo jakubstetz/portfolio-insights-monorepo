@@ -1,5 +1,5 @@
 """
-This file implements all of the functionality in order to manage stock price alerts through interaction with the PostgreSQL database.
+Manage stock price alerts through interaction with the PostgreSQL database.
 """
 
 import database
@@ -10,30 +10,33 @@ def search(search_term):
   """
   Search stock price alerts by a search term.
   """
-  ilike_argument = '%' + search_term + '%' # Wildcards (%) used so that substring can be prefix or suffix, or contained within a string
+  # Use wildcards (%) to match prefix, suffix, or substring
+  ilike_argument = '%' + search_term + '%'
   with database.connection.cursor() as cur:
     cur.execute('SELECT * FROM alerts WHERE ticker ILIKE %s;', (ilike_argument,))
-    keys = [column[0] for column in cur.description] # Column headers associated with retrieved data
+    # Extract column names from the result metadata
+    keys = [column[0] for column in cur.description]
     all_alerts = cur.fetchall()
-    return [dict(zip(keys, row)) for row in all_alerts] # Return corresponding alerts in JSON-friendly format
+    # Format results as list of dictionaries for JSON compatibility
+    return [dict(zip(keys, row)) for row in all_alerts]
 
 def create(alert):
   """
   Create a new stock price alert. Note that the alert id will be automatically created in the database using SERIAL.
   """
-  # Transform input in preparation for database entry
+  # Convert Pydantic model to plain dict and set 'expired' status
   alert = alert.dict()
   if alert['expiration_time']: alert['expired'] = False
   else: alert['expired'] = None
 
-  # Create new alert in database
+  # Insert alert into the database
   with database.connection.cursor() as cur:
     cur.execute('''
                 INSERT INTO alerts (ticker, price, direction, expired, expiration_time)
                 VALUES (%(ticker)s, %(price)s, %(direction)s, %(expired)s, %(expiration_time)s) RETURNING alert_id;
                 ''', alert)
     database.connection.commit()
-    return cur.fetchone()[0] # Return id for new alert
+    return cur.fetchone()[0] # Return the newly created alert id
 
 def delete(id):
   """
@@ -47,7 +50,7 @@ def evaluate():
   """
   Evaluate all alerts against stock prices to determine if alert should be triggered.
   """
-  # Retrieve alerts from database
+  # Fetch active, untriggered alerts from the database
   with database.connection.cursor() as cur:
     cur.execute('''
                 SELECT alert_id, ticker, price, direction
@@ -56,16 +59,16 @@ def evaluate():
                 ''')
     alerts = cur.fetchall()
 
-  # Evaluate alerts and trigger as appropriate
+  # Avoid redundant API calls by caching stock prices
   cache = {}
   for id, ticker, price, direction in alerts:
-    # Retrieve stock price
+    # Get stock price (use cached value if available)
     if ticker in cache: stock_price = cache[ticker]
     else:
       stock_price = market.stock_price(ticker)
       cache[ticker] = stock_price
 
-    # Trigger alert if stock price falls within price alert trigger condition
+    # Trigger alert if stock price meets condition
     if (direction == 'below' and price > stock_price) or (direction == 'above' and price < stock_price): trigger(id)
 
 def trigger(id):
