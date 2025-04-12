@@ -17,7 +17,7 @@ function App() {
         <AlertsArea onNewAlert={() => setShowAlertCreationPrompt(true)} alertsRefresh={alertsRefresh} alertsSearchInput={alertsSearchInput} setAlertsSearchInput={setAlertsSearchInput} />
       </div>
       {showAlertCreationPrompt && (
-        <AlertCreationPrompt onClose={() => setShowAlertCreationPrompt(false)} setAlertsRefresh={setAlertsRefresh}/>
+        <AlertCreationPrompt onClose={() => setShowAlertCreationPrompt(false)} setAlertsRefresh={setAlertsRefresh} setAlertsSearchInput={setAlertsSearchInput} />
       )}
     </>
   )
