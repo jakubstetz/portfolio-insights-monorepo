@@ -23,8 +23,10 @@ def init():
     host = os.getenv("DATABASE_HOST")
     port = os.getenv("DATABASE_PORT")
     dbname = os.getenv("DATABASE_NAME")
+    username = os.getenv("DATABASE_USERNAME")
+    password = os.getenv("DATABASE_PASSWORD")
 
-    dsn = f"host={host} port={port} dbname={dbname}"
+    dsn = f"host={host} port={port} dbname={dbname} user={username} password={password}"
     connection = postgres.connect(dsn)
 
 
