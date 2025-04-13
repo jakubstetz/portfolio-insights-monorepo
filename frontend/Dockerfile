@@ -1,7 +1,7 @@
 # Build step
 FROM node:22-alpine AS builder
 WORKDIR /app
-COPY frontend/ .
+COPY . .
 RUN npm install && npm run build
 
 # Serve with nginx
