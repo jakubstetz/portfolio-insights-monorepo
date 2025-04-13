@@ -18,9 +18,11 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+# Use local .env file when developing locally
+if not os.getenv("RUNNING_IN_DOCKER"):
+    from dotenv import load_dotenv
+    load_dotenv()
 
 cors_origins = os.getenv("CORS_ORIGINS").split(",")
 
