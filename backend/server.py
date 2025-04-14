@@ -67,7 +67,7 @@ def shutdown():
 # Health check / root
 @app.get("/")
 async def root():
-    return "Hello World"
+    return "Portfolio Insights"
 
 
 # Endpoint to return stock price history
