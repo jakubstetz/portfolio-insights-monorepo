@@ -1,0 +1,34 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            cd portfolio-insights
+            git pull origin main
+            cd backend
+            docker stop portfolio-insights-backend || true
+            docker rm portfolio-insights-backend || true
+            docker build -t portfolio-insights-backend .
+            docker run -d --name portfolio-insights-backend -p 8000:8000 --env-file .env portfolio-insights-backend
+          EOF
