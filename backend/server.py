@@ -72,9 +72,9 @@ async def root():
 
 # Endpoint to return stock price history
 @app.get("/stocks")
-async def get_stock_info(ticker):
+async def get_stock_info(ticker, period, interval):
     try:
-        return market.stock_info(ticker)
+        return market.stock_info(ticker, period, interval)
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
