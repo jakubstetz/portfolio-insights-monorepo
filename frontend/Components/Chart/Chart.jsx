@@ -1,3 +1,12 @@
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
 import "./Chart.css";
 
 function Chart({ chartData }) {
@@ -9,11 +18,27 @@ function Chart({ chartData }) {
     );
   }
 
+  if (!chartData.prices || chartData.prices.length === 0) {
+    return <div id="chart"><p>No historical data</p></div>;
+  }
+
   return (
     <div id="chart">
-      <p>Ticker: {chartData.ticker}</p>
-      <p>Price: ${chartData.price}</p>
-      <p>Currency: {chartData.currency}</p>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={chartData.prices}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis domain={["auto", "auto"]} />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="close"
+            stroke="#00ffff"
+            dot={false}
+            strokeWidth={2}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }
