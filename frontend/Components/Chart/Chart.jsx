@@ -24,17 +24,45 @@ function Chart({ chartData }) {
 
   return (
     <div id="chart">
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData.prices}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis domain={["auto", "auto"]} />
-          <Tooltip />
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#475569"
+            strokeOpacity={0.55} />
+          <XAxis
+            dataKey="date" 
+            tickFormatter={(str) => {
+              const date = new Date(str);
+              return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+            }}
+          />
+          <YAxis
+            domain={["auto", "auto"]}
+            tickCount={10}
+            tick={{ fontSize: 8 }}
+            padding={{ top: 10, bottom: 20 }}
+            tickFormatter={(value) => `$${value.toFixed(2)}`}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#1f2937",
+              border: "1px solid #374151",
+              borderRadius: "6px",
+              color: "#e0e0e0"
+            }}
+            labelStyle={{ color: "#d1d5db" }}
+            formatter={(value) => [`$${value.toFixed(2)}`, "Close"]}
+          />
           <Line
-            type="monotone"
+            type="linear"
             dataKey="close"
-            stroke="#00ffff"
-            dot={false}
+            stroke="#00ff65"
+            dot={({ index, cx, cy, payload }) =>
+              index === chartData.prices.length - 1 ? (
+                <circle cx={cx} cy={cy} r={3.5} fill="#00ffff" stroke="#fff" strokeWidth={1} />
+              ) : null
+            }
             strokeWidth={2}
           />
         </LineChart>

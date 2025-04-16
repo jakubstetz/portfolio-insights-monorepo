@@ -1,6 +1,6 @@
 #chart {
   background-color: #111827;
-  border: 1px dashed #00ffff;
+  border: 1px solid #00ffff;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -8,4 +8,5 @@
   color: #00ffff;
   padding: 20px;
   flex: 1;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
 }
