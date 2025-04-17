@@ -8,6 +8,12 @@
   align-items: center;
   color: #e0e0e0;
   width: 400px;
+  transition: transform 0.3s;
+  margin: 5px;
+}
+
+.alert:hover {
+  transform: scale(1.02);
 }
 
 .delete-button {
