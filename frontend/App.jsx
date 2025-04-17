@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Header from "./Header/Header";
-import ChartArea from "./ChartArea/ChartArea";
-import AlertsArea from "./AlertsArea/AlertsArea";
-import AlertCreationPrompt from "./AlertCreationPrompt/AlertCreationPrompt";
+import Header from "./Components/Header/Header";
+import ChartArea from "./Components/ChartArea/ChartArea";
+import AlertsArea from "./Components/AlertsArea/AlertsArea";
+import AlertCreationPrompt from "./Components/AlertCreationPrompt/AlertCreationPrompt";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 

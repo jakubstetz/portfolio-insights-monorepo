@@ -9,15 +9,27 @@ https://yfinance-python.org/
 import yfinance as yf
 
 
-def stock_info(ticker):
+def stock_info(ticker, period, interval):
     """
     Retrieve stock information.
     """
-    info = yf.Ticker(ticker).fast_info
+    ticker_object = yf.Ticker(ticker)
+    info = ticker_object.fast_info
+    hist = ticker_object.history(period=period, interval=interval)
+
+    if hist.empty:
+        raise ValueError("No historical data found")
+    
+    prices = [
+        {"date": date.strftime("%Y-%m-%d"), "close": round(row["Close"], 2)}
+        for date, row in hist.iterrows()
+    ]
+
     return {
         "ticker": ticker.upper(),
         "price": info["lastPrice"],
         "currency": info.get("currency", "USD"),
+        "prices": prices,
     }
 
 

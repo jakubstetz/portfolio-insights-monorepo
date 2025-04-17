@@ -1,1 +1,12 @@
 node_modules
+backend
+.github
+Dockerfile
+project_notes
+.DS_Store
+.gitignore
+ISSUE_TEMPLATE.md
+dist
+*.ttf
+dev_journal
+.qodo

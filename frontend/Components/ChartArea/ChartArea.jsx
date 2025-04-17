@@ -3,6 +3,10 @@ import "./ChartArea.css";
 import SearchBar from "../SearchBar/SearchBar";
 import Chart from "../Chart/Chart";
 
+// HARDCODED VALUES FOR STOCK PRICE HISTORY RETRIEVAL
+const period = '1mo'
+const interval = '1d'
+
 // Uses SearchBar input to fetch and display stock info
 function ChartArea({ apiUrl }) {
   const [chartData, setChartData] = useState("");
@@ -15,7 +19,7 @@ function ChartArea({ apiUrl }) {
     if (!isValidTicker) {
       setChartData("");
     } else {
-      const api_response = await fetch(`${apiUrl}/stocks?ticker=${trimmed}`);
+      const api_response = await fetch(`${apiUrl}/stocks?ticker=${trimmed}&period=${period}&interval=${interval}`);
       const stock_data = await api_response.json();
       setChartData(stock_data);
     }

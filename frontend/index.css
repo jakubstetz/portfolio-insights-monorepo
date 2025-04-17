@@ -1,7 +1,7 @@
 :root {
   /* root pseudo-class */
   /* Fonts */
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -44,13 +44,18 @@ html {
   transition:
     color 0.4s ease,
     background-color 0.4s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    transform 0.3s,
+    box-shadow 0.3s;
+  margin: 5px;
 }
 
 #new-alert-button:hover {
   background-color: rgba(255, 255, 255, 0.04);
   border: 2px dashed rgba(0, 200, 200, 0.7);
   color: rgb(0, 200, 200);
+  transform: scale(1.02);
+  box-shadow: 0 0 6px rgba(0, 255, 255, 0.35);
 }
 
 #new-alert-button:active {
