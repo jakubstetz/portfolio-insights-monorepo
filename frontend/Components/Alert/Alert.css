@@ -1,7 +1,7 @@
 .alert {
   background-color: #1f2937;
   border: 1px solid #374151;
-  padding: 10px;
+  padding: 6px;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
