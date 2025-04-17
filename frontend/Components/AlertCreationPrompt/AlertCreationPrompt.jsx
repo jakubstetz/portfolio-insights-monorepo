@@ -13,6 +13,14 @@ function AlertCreationPrompt({
     type: "",
     expiration: "",
   });
+  const [animateOut, setAnimateOut] = useState(false);
+
+  const closeWithAnimation = () => {
+    setAnimateOut(true);
+    setTimeout(() => {
+      onClose();
+    }, 200); // Matches fadeOutPrompt duration
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,7 +44,7 @@ function AlertCreationPrompt({
         // Clear the search input
         setAlertsSearchInput("");
         setAlertsRefresh((prev) => !prev); // Trigger refresh of displayed alerts
-        onClose(); // Close prompt after success
+        closeWithAnimation(); // Close prompt after success
       } else {
         const error = await api_response.json();
         console.error("Failed to create alert:", error.detail);
@@ -52,10 +60,16 @@ function AlertCreationPrompt({
   };
 
   return (
-    <div id="blur">
-      <div id="alert-creation-prompt">
+    <div
+      id="blur"
+      className={animateOut ? "animate-out" : "animate-in"}
+    >
+      <div
+        id="alert-creation-prompt"
+        className={animateOut ? "animate-out" : "animate-in"}
+      >
         <h2>Create New Alert</h2>
-        <button id="close-button" onClick={onClose} type="button">
+        <button id="close-button" onClick={closeWithAnimation} type="button">
           X
         </button>
         <form onSubmit={submitHandler}>
