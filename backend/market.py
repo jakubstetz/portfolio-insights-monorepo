@@ -19,7 +19,7 @@ def stock_info(ticker, period, interval):
 
     if hist.empty:
         raise ValueError("No historical data found")
-    
+
     prices = [
         {"date": date.strftime("%Y-%m-%d"), "close": round(row["Close"], 2)}
         for date, row in hist.iterrows()
@@ -50,23 +50,17 @@ def is_valid_alert(ticker, price, direction):
         if current_price is None:
             raise ValueError("Missing current price.")
     except Exception:
-        return {
-            "valid": False,
-            "message": "Ticker not found or data unavailable."
-        }
-    
+        return {"valid": False, "message": "Ticker not found or data unavailable."}
+
     if direction == "above" and current_price > price:
         return {
             "valid": False,
-            "message": f"Current price is ${current_price:.2f}, already above ${price:.2f}."
+            "message": f"Current price is ${current_price:.2f}, already above ${price:.2f}.",
         }
     if direction == "below" and current_price < price:
         return {
             "valid": False,
-            "message": f"Current price is ${current_price:.2f}, already below ${price:.2f}."
+            "message": f"Current price is ${current_price:.2f}, already below ${price:.2f}.",
         }
-    
-    return {
-            "valid": True,
-            "message": "Valid alert"
-        }
+
+    return {"valid": True, "message": "Valid alert"}
