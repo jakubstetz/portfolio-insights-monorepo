@@ -65,10 +65,39 @@ def shutdown():
 ##### General #####
 
 
-# Health check / root
+# Root
 @app.get("/")
 async def root():
     return "Hello World"
+
+
+# Health check for uptime monitoring
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
+# Health check for database and market connections
+@app.get("/health/deep")
+def health_check_deep():
+    db_ok = database.ping()
+    market_ok = market.ping()
+    return {
+        "status": "ok" if db_ok and market_ok else "fail",
+        "database connection": db_ok,
+        "market connection": market_ok,
+    }
+
+
+# Temporary endpoint for manual testing
+@app.get("/test")
+async def test():
+    return True
+
+
+# ------------------------------------------------------------------------#
+
+##### yfinance Connections #####
 
 
 # Endpoint to return stock price history
@@ -93,12 +122,6 @@ async def check_alert(ticker, price: float, direction):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
-
-
-# Temporary endpoint for manual testing
-@app.get("/test")
-async def test():
-    return True
 
 
 # ------------------------------------------------------------------------#
