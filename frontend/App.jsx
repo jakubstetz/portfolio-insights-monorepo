@@ -14,7 +14,21 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#1e283a",       // dark slate blue-gray
+            color: "#e0f2fe",            // soft light cyan
+            border: "1px solid rgb(47, 157, 205)", // sky blue border
+            fontSize: "1.05rem",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            marginTop: "76px",
+            boxShadow: "0 0 9px rgba(62, 195, 200, 0.3)",
+          },
+        }}
+      />
       <Header />
       <div id="main-area">
         <ChartArea apiUrl={apiUrl} />
