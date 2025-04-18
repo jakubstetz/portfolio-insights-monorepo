@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { ClipLoader } from "react-spinners";
 import "./AlertCreationPrompt.css";
 
 function AlertCreationPrompt({
@@ -15,6 +16,7 @@ function AlertCreationPrompt({
     expiration: "",
   });
   const [animateOut, setAnimateOut] = useState(false);
+  const [checkingAlertValidity, setCheckingAlertValidity] = useState(false);
 
   const closeWithAnimation = () => {
     setAnimateOut(true);
@@ -45,6 +47,7 @@ function AlertCreationPrompt({
       return
     }
 
+    setCheckingAlertValidity(true);
     try {
       const query = `ticker=${trimmed}&price=${form.price}&direction=${form.type}`;
       const api_response = await fetch(`${apiUrl}/check-alert?${query}`);
@@ -58,6 +61,7 @@ function AlertCreationPrompt({
             maxWidth: 'none',
           },
       });
+        setCheckingAlertValidity(false);
         return
       }
     } catch (err) {
@@ -94,6 +98,8 @@ function AlertCreationPrompt({
     } catch (err) {
       toast.error("Network error. Please try again.");
       console.error("Error:", err);
+    } finally {
+      setCheckingAlertValidity(false);
     }
   };
 
@@ -111,6 +117,12 @@ function AlertCreationPrompt({
         id="alert-creation-prompt"
         className={animateOut ? "animate-out" : "animate-in"}
       >
+        {checkingAlertValidity && (
+          <div id="checking-overlay">
+            <ClipLoader color="#00d6d6" size={40} />
+            <p>Attempting to create a new alert...</p>
+          </div>
+        )}
         <h2>Create New Alert</h2>
         <div id="glow-divider"></div>
         <button id="close-button" onClick={closeWithAnimation} type="button">
@@ -125,6 +137,7 @@ function AlertCreationPrompt({
               type="text"
               maxLength="10"
               onChange={changeHandler}
+              disabled={checkingAlertValidity}
             />
           </div>
           <div>
@@ -135,6 +148,7 @@ function AlertCreationPrompt({
               type="number"
               step="0.01"
               onChange={changeHandler}
+              disabled={checkingAlertValidity}
             />
           </div>
           <fieldset>
@@ -145,6 +159,7 @@ function AlertCreationPrompt({
                 name="type"
                 value="above"
                 onChange={changeHandler}
+                disabled={checkingAlertValidity}
               />
               Above
             </label>
@@ -154,6 +169,7 @@ function AlertCreationPrompt({
                 name="type"
                 value="below"
                 onChange={changeHandler}
+                disabled={checkingAlertValidity}
               />
               Below
             </label>
@@ -165,6 +181,7 @@ function AlertCreationPrompt({
               name="expiration"
               type="date"
               onChange={changeHandler}
+              disabled={checkingAlertValidity}
             />
           </div>
           <button type="submit">Create Alert</button>
