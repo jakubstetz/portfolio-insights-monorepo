@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import "./AlertCreationPrompt.css";
 
 function AlertCreationPrompt({
@@ -44,12 +45,15 @@ function AlertCreationPrompt({
         // Clear the search input
         setAlertsSearchInput("");
         setAlertsRefresh((prev) => !prev); // Trigger refresh of displayed alerts
+        toast.success("Alert created successfully!"); // User notification
         closeWithAnimation(); // Close prompt after success
       } else {
         const error = await api_response.json();
+        toast.error(error.detail || "Failed to create alert."); // User notification
         console.error("Failed to create alert:", error.detail);
       }
     } catch (err) {
+      toast.error("Network error. Please try again.");
       console.error("Error:", err);
     }
   };

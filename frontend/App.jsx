@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import Header from "./Components/Header/Header";
 import ChartArea from "./Components/ChartArea/ChartArea";
 import AlertsArea from "./Components/AlertsArea/AlertsArea";
@@ -13,6 +14,7 @@ function App() {
 
   return (
     <>
+      <Toaster position="top-center" />
       <Header />
       <div id="main-area">
         <ChartArea apiUrl={apiUrl} />
