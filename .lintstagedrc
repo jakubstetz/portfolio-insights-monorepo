@@ -4,5 +4,5 @@
     "npm run format"
   ],
   "**/*.{html,css,json,md,yaml,toml}": "npm run format",
-  "backend/**/*.py": "cd backend && source .venv/bin/activate && black"
+  "backend/**/*.py": "backend/.venv/bin/black"
 }
