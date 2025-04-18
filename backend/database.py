@@ -30,6 +30,18 @@ def init():
     connection = postgres.connect(dsn)
 
 
+def ping():
+    """
+    Health check for testing API connection to database.
+    """
+    try:
+        with connection.cursor() as cur:
+            cur.execute("SELECT 1")
+        return True
+    except:
+        return False
+
+
 def close():
     """
     Close database connection on API shutdown.

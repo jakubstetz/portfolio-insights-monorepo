@@ -9,6 +9,17 @@ https://yfinance-python.org/
 import yfinance as yf
 
 
+def ping():
+    """
+    Health check function for verifying API connectivity with stock market via yfinance.
+    """
+    try:
+        data = yf.Ticker("SPY").fast_info
+        return "lastPrice" in data and data["lastPrice"] is not None
+    except:
+        return False
+
+
 def stock_info(ticker, period, interval):
     """
     Retrieve stock information.
