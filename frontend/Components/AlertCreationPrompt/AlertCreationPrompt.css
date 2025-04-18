@@ -89,12 +89,6 @@
   box-shadow: 0 0 4px #38bdf8;
 }
 
-#alert-creation-prompt input:focus {
-  outline: none;
-  border-color: #28a0bdb1;
-  box-shadow: 0 0 4px #38bdf8;
-}
-
 #close-button {
   position: absolute;
   top: 1rem;
