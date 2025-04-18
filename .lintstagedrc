@@ -1,0 +1,8 @@
+{
+  "frontend/**/*.{js,jsx}": [
+    "cd frontend && npm run lint",
+    "npm run format"
+  ],
+  "**/*.{html,css,json,md,yaml,toml}": "npm run format",
+  "backend/**/*.py": "cd backend && source .venv/bin/activate && black"
+}
