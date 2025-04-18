@@ -1,7 +1,5 @@
 #alert-creation-prompt {
-  background-color: #1a1d23;
   padding: 20px;
-  border: 2px solid #333;
   border-radius: 10px;
   z-index: 2;
   max-width: 500px;
@@ -9,8 +7,9 @@
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   position: relative;
+  background: rgba(26, 29, 35, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @keyframes fadeInPrompt {
@@ -49,6 +48,12 @@
   gap: 1rem;
 }
 
+#alert-creation-prompt label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
 #alert-creation-prompt input[type="text"],
 #alert-creation-prompt input[type="number"],
 #alert-creation-prompt input[type="date"] {
@@ -69,9 +74,25 @@
   margin: 0;
 }
 
+#alert-creation-prompt input[type="radio"] {
+  margin: 10px 6px 0;
+}
+
 #alert-creation-prompt form button {
   border-radius: 10px;
   width: 100%;
+  transition: box-shadow 0.3s;
+  margin-top: 8px;
+}
+
+#alert-creation-prompt form button:hover {
+  box-shadow: 0 0 4px #38bdf8;
+}
+
+#alert-creation-prompt input:focus {
+  outline: none;
+  border-color: #28a0bdb1;
+  box-shadow: 0 0 4px #38bdf8;
 }
 
 #close-button {
@@ -102,8 +123,25 @@
 }
 
 h2 {
-  color: cyan;
+  color: rgb(0, 230, 230);
+  font-size: 1.4rem;
   text-align: center;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 4px rgba(56, 189, 248, 0.3);
+}
+
+#glow-divider {
+  height: 1px;
+  width: 80%;
+  margin: 0.25rem auto;
+  background: linear-gradient(
+    to right,
+    rgba(56, 189, 248, 0) 0%,
+    rgba(56, 189, 248, 0.5) 50%,
+    rgba(56, 189, 248, 0) 100%
+  );
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.25);
+  border-radius: 2px;
 }
 
 #blur {
@@ -116,6 +154,8 @@ h2 {
   z-index: 1;
   width: 100%;
   height: 100%;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 
 @keyframes fadeInBlur {

@@ -73,6 +73,7 @@ function AlertCreationPrompt({
         className={animateOut ? "animate-out" : "animate-in"}
       >
         <h2>Create New Alert</h2>
+        <div id="glow-divider"></div>
         <button id="close-button" onClick={closeWithAnimation} type="button">
           X
         </button>
