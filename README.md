@@ -2,8 +2,6 @@
 
 A stock analysis and alerting tool that lets users search for stock data and create custom price alerts. Built with a modern, scalable backend and a clean, reactive frontend.
 
----
-
 ## 🧠 Project Overview
 
 **Portfolio Insights** lets users:
@@ -12,8 +10,6 @@ A stock analysis and alerting tool that lets users search for stock data and cre
 - Visualize recent price trends in a dynamic chart
 - Create alerts for when a stock goes _above_ or _below_ a custom price
 - View, search, and delete alerts with a responsive UI
-
----
 
 ## 🛠️ Tech Stack
 
@@ -24,8 +20,6 @@ A stock analysis and alerting tool that lets users search for stock data and cre
 | DevOps   | GitHub Actions, Docker, AWS EC2, CI/CD, Husky, lint-staged |
 | Linting  | ESLint, Prettier, Black                                    |
 
----
-
 ## 🚀 Features
 
 - 🔍 Real-time ticker search with validation
@@ -34,8 +28,6 @@ A stock analysis and alerting tool that lets users search for stock data and cre
 - 🔄 Live refresh of alert display
 - 🧼 Fully integrated linting/formatting workflow
 - 🧪 Dual health check endpoints (`/health`, `/health/deep`)
-
----
 
 ## 📦 Local Development
 
