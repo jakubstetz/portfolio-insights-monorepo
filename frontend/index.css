@@ -49,3 +49,27 @@ input:focus {
   border-color: #28a0bdb1;
   box-shadow: 0 0 4px #38bdf8;
 }
+
+.section-label {
+  margin-top: 20px;
+  color: cyan;
+  font-size: 1.35rem;
+  font-weight: 600;
+  text-shadow: 0 0 3px rgba(0, 255, 255, 0.1);
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+#glow-divider {
+  height: 1px;
+  width: 80%;
+  margin: 0.25rem auto;
+  background: linear-gradient(
+    to right,
+    rgba(56, 189, 248, 0) 0%,
+    rgba(56, 189, 248, 0.5) 50%,
+    rgba(56, 189, 248, 0) 100%
+  );
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.25);
+  border-radius: 2px;
+}

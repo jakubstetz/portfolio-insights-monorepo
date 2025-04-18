@@ -51,7 +51,8 @@ function AlertsArea({
     const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
 
     if (!isValidTicker) {
-      setAlerts("");
+      toast.dismiss();
+      toast.error('Invalid search.')
     } else {
       try {
         const api_response = await fetch(
@@ -67,6 +68,8 @@ function AlertsArea({
 
   return (
     <div id="alerts-area">
+      <h3 className="section-label">Stock Price Alerts</h3>
+      <div id="glow-divider"></div>
       <SearchBar
         searchHandler={searchHandler}
         searchInput={alertsSearchInput}
