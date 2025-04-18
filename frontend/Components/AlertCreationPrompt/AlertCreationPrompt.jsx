@@ -92,6 +92,7 @@ function AlertCreationPrompt({
         // Clear the search input
         setAlertsSearchInput("");
         setAlertsRefresh((prev) => !prev); // Trigger refresh of displayed alerts
+        toast.dismiss();
         toast.success("Alert created successfully!", {
           style: {
             marginTop: "66px",
@@ -100,6 +101,7 @@ function AlertCreationPrompt({
         closeWithAnimation(); // Close prompt after success
       } else {
         const error = await api_response.json();
+        toast.dismiss();
         toast.error(error.detail || "Failed to create alert.", {
           style: {
             marginTop: "66px",
@@ -108,6 +110,7 @@ function AlertCreationPrompt({
         console.error("Failed to create alert:", error.detail);
       }
     } catch (err) {
+      toast.dismiss();
       toast.error("Network error. Please try again.");
       console.error("Error:", err);
     } finally {
