@@ -43,7 +43,11 @@ function AlertCreationPrompt({
     const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
     if (!isValidTicker) {
       toast.dismiss();
-      toast.error('Invalid ticker.')
+      toast.error('Invalid ticker.', {
+        style: {
+          marginTop: '66px',
+        }
+      })
       return
     }
 
@@ -56,6 +60,7 @@ function AlertCreationPrompt({
         toast.dismiss();
         toast.error(error.detail || 'Error checking validity of alert.', {
           style: {
+            marginTop: '66px',
             whiteSpace: 'nowrap',
             width: 'auto',
             maxWidth: 'none',
@@ -88,11 +93,19 @@ function AlertCreationPrompt({
         // Clear the search input
         setAlertsSearchInput("");
         setAlertsRefresh((prev) => !prev); // Trigger refresh of displayed alerts
-        toast.success("Alert created successfully!"); // User notification
+        toast.success("Alert created successfully!", {
+          style: {
+            marginTop: '66px',
+          }
+        }); // User notification
         closeWithAnimation(); // Close prompt after success
       } else {
         const error = await api_response.json();
-        toast.error(error.detail || "Failed to create alert."); // User notification
+        toast.error(error.detail || "Failed to create alert.", {
+          style: {
+            marginTop: '66px',
+          }
+        }); // User notification
         console.error("Failed to create alert:", error.detail);
       }
     } catch (err) {
