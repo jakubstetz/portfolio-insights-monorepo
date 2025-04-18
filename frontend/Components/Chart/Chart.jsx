@@ -5,7 +5,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 import { ClipLoader } from "react-spinners";
 import "./Chart.css";
@@ -36,7 +36,11 @@ function Chart({ chartData, chartIsLoading }) {
   }
 
   if (!chartData.prices || chartData.prices.length === 0) {
-    return <div id="chart"><p>No historical data</p></div>;
+    return (
+      <div id="chart">
+        <p>No historical data</p>
+      </div>
+    );
   }
 
   return (
@@ -46,12 +50,16 @@ function Chart({ chartData, chartIsLoading }) {
           <CartesianGrid
             strokeDasharray="3 3"
             stroke="#475569"
-            strokeOpacity={0.55} />
+            strokeOpacity={0.55}
+          />
           <XAxis
-            dataKey="date" 
+            dataKey="date"
             tickFormatter={(str) => {
               const date = new Date(str);
-              return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+              return date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              });
             }}
           />
           <YAxis
@@ -66,7 +74,7 @@ function Chart({ chartData, chartIsLoading }) {
               backgroundColor: "#1f2937",
               border: "1px solid #374151",
               borderRadius: "6px",
-              color: "#e0e0e0"
+              color: "#e0e0e0",
             }}
             labelStyle={{ color: "#d1d5db" }}
             formatter={(value) => [`$${value.toFixed(2)}`, "Close"]}
@@ -77,7 +85,14 @@ function Chart({ chartData, chartIsLoading }) {
             stroke="#00ff65"
             dot={({ index, cx, cy, payload }) =>
               index === chartData.prices.length - 1 ? (
-                <circle cx={cx} cy={cy} r={3.5} fill="#00ffff" stroke="#fff" strokeWidth={1} />
+                <circle
+                  cx={cx}
+                  cy={cy}
+                  r={3.5}
+                  fill="#00ffff"
+                  stroke="#fff"
+                  strokeWidth={1}
+                />
               ) : null
             }
             strokeWidth={2}

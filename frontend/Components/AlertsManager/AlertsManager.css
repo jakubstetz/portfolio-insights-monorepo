@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  gap: 10px  
+  gap: 10px;
 }
 
 #new-alert-button {

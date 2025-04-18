@@ -47,12 +47,12 @@ function AlertsArea({
 
   const searchHandler = async (search_term) => {
     const trimmed = search_term.trim().toUpperCase();
-    setAlertsSearchInput(trimmed)
+    setAlertsSearchInput(trimmed);
     const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
 
     if (!isValidTicker) {
       toast.dismiss();
-      toast.error('Invalid search.')
+      toast.error("Invalid search.");
     } else {
       try {
         const api_response = await fetch(

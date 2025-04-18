@@ -18,8 +18,8 @@ function App() {
         position="top-center"
         toastOptions={{
           style: {
-            background: "#1e283a",       // dark slate blue-gray
-            color: "#e0f2fe",            // soft light cyan
+            background: "#1e283a", // dark slate blue-gray
+            color: "#e0f2fe", // soft light cyan
             border: "1px solid rgb(47, 157, 205)", // sky blue border
             fontSize: "1.05rem",
             padding: "12px 16px",
