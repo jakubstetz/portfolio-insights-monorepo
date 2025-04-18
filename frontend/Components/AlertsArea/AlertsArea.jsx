@@ -26,6 +26,7 @@ function AlertsArea({
       });
 
       if (api_response.ok) {
+        toast.dismiss();
         toast.success("Alert deleted.");
         console.log(`Alert #${alert_id} deleted.`);
         // Clear search input
@@ -33,10 +34,12 @@ function AlertsArea({
         searchHandler(""); // Refresh displayed list of alerts
       } else {
         const error = await api_response.json();
+        toast.dismiss();
         toast.error(error.detail || "Failed to delete alert.");
         console.error("Failed to delete alert:", error.detail);
       }
     } catch (err) {
+      toast.dismiss();
       toast.error("Network error.");
       console.error("Error:", err);
     }

@@ -34,6 +34,7 @@ function ChartArea({ apiUrl }) {
           const stock_data = await api_response.json();
           setChartData(stock_data);
         } else {
+          toast.dismiss();
           toast.error('Ticker not found.')
           setChartData(false);
         }

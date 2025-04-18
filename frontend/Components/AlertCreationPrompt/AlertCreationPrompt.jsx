@@ -25,6 +25,26 @@ function AlertCreationPrompt({
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    if (!form.ticker || !form.price || !form.type) {
+      toast.dismiss();
+      toast.error("All fields are required.", {
+        style: {
+          marginTop: '66px',
+        }
+      }
+    );
+      return;
+    }
+
+    const trimmed = form.ticker.trim().toUpperCase();
+    const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
+    if (!isValidTicker) {
+      toast.dismiss();
+      toast.error('Invalid ticker.')
+      return
+    }
+
     try {
       const api_response = await fetch(`${apiUrl}/alerts`, {
         method: "POST",
@@ -85,7 +105,6 @@ function AlertCreationPrompt({
               name="ticker"
               type="text"
               maxLength="10"
-              required
               onChange={changeHandler}
             />
           </div>
@@ -96,7 +115,6 @@ function AlertCreationPrompt({
               name="price"
               type="number"
               step="0.01"
-              required
               onChange={changeHandler}
             />
           </div>
@@ -107,7 +125,6 @@ function AlertCreationPrompt({
                 type="radio"
                 name="type"
                 value="above"
-                required
                 onChange={changeHandler}
               />
               Above
