@@ -63,10 +63,12 @@ VITE_API_URL=http://localhost:8000
 - Pre-commit enforcement using Husky, Black, and Prettier
 - Health monitored via dedicated endpoints
 
-🔍 Demo
+## 🔍 Demo
+
 https://portfolio-insights.jakubstetz.dev
 
 API exposed at https://api.portfolio-insights.jakubstetz.dev
 
-📄 License
+## 📄 License
+
 MIT License
