@@ -11,10 +11,26 @@ import { ClipLoader } from "react-spinners";
 import "./Chart.css";
 
 function Chart({ chartData, chartIsLoading }) {
+  if (chartIsLoading) {
+    return (
+      <div id="chart">
+        <ClipLoader size={40} color="#00d6d6" />
+      </div>
+    );
+  }
+
+  if (chartData === null) {
+    return (
+      <div id="chart">
+        <p>Search for a stock above to view its historical data.</p>
+      </div>
+    );
+  }
+
   if (!chartData || chartData.detail === "Ticker not found") {
     return (
       <div id="chart">
-        <p>Ticker not found</p>
+        <p>Ticker not found.</p>
       </div>
     );
   }
@@ -22,14 +38,6 @@ function Chart({ chartData, chartIsLoading }) {
   if (!chartData.prices || chartData.prices.length === 0) {
     return <div id="chart"><p>No historical data</p></div>;
   }
-
-  if (chartIsLoading) {
-    return (
-      <div id="chart">
-        <ClipLoader size={40} color="#00d6d6" />
-      </div>
-    );
-  }  
 
   return (
     <div id="chart">

@@ -10,3 +10,8 @@
   flex: 1;
   box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
 }
+
+#chart>p {
+  margin: 40px;
+  text-align: center;
+}
