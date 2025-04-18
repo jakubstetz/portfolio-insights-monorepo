@@ -21,6 +21,7 @@ function ChartArea({ apiUrl }) {
     }
 
     const trimmed = ticker_searched.trim().toUpperCase();
+    setChartSearchInput(trimmed)
     const isValidTicker = /^[A-Z]{1,10}$/.test(trimmed);
 
     if (!isValidTicker) {

@@ -44,6 +44,7 @@ function AlertsArea({
 
   const searchHandler = async (search_term) => {
     const trimmed = search_term.trim().toUpperCase();
+    setAlertsSearchInput(trimmed)
     const isValidTicker = /^$|^[A-Z]{1,10}$/.test(trimmed);
 
     if (!isValidTicker) {
