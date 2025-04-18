@@ -25,6 +25,7 @@ function ChartArea({ apiUrl }) {
     const isValidTicker = /^[A-Z]{1,10}$/.test(trimmed);
 
     if (!isValidTicker) {
+      toast.dismiss();
       toast.error('Invalid search.')
     } else {
       setChartIsLoading(true);
