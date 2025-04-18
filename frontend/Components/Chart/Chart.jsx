@@ -22,7 +22,7 @@ function Chart({ chartData, chartIsLoading }) {
   if (chartData === null) {
     return (
       <div id="chart">
-        <p>Search for a stock above to view its historical data.</p>
+        <p key="empty">Search for a stock above to view its historical data.</p>
       </div>
     );
   }
@@ -30,7 +30,7 @@ function Chart({ chartData, chartIsLoading }) {
   if (!chartData || chartData.detail === "Ticker not found") {
     return (
       <div id="chart">
-        <p>Ticker not found.</p>
+        <p key="not-found">Ticker not found.</p>
       </div>
     );
   }
