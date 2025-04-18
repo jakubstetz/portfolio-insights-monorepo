@@ -38,3 +38,35 @@ def stock_price(ticker):
     Retrieve current stock price.
     """
     return yf.Ticker(ticker).fast_info["lastPrice"]
+
+
+def is_valid_alert(ticker, price, direction):
+    """
+    Check proposed alert against market to see if it's valid.
+    """
+    try:
+        stock = yf.Ticker(ticker).fast_info
+        current_price = stock.get("lastPrice")
+        if current_price is None:
+            raise ValueError("Missing current price.")
+    except Exception:
+        return {
+            "valid": False,
+            "message": "Ticker not found or data unavailable."
+        }
+    
+    if direction == "above" and current_price > price:
+        return {
+            "valid": False,
+            "message": f"Current price is ${current_price:.2f}, already above ${price:.2f}."
+        }
+    if direction == "below" and current_price < price:
+        return {
+            "valid": False,
+            "message": f"Current price is ${current_price:.2f}, already below ${price:.2f}."
+        }
+    
+    return {
+            "valid": True,
+            "message": "Valid alert"
+        }

@@ -78,12 +78,20 @@ async def get_stock_info(ticker, period, interval):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
+    
+@app.get("/check-alert")
+async def check_alert(ticker, price: float, type):
+    try:
+        return market.is_valid_alert(ticker, price, type)
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=404, detail="Ticker not found")
 
 
 # Temporary endpoint for manual testing
 @app.get("/test")
 async def test():
-    return alerts.evaluate()
+    return True
 
 
 # ------------------------------------------------------------------------#
