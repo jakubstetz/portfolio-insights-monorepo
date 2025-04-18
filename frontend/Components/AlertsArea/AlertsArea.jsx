@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import "./AlertsArea.css";
 import SearchBar from "../SearchBar/SearchBar";
 import AlertsManager from "../AlertsManager/AlertsManager";
@@ -25,15 +26,18 @@ function AlertsArea({
       });
 
       if (api_response.ok) {
+        toast.success("Alert deleted.");
         console.log(`Alert #${alert_id} deleted.`);
         // Clear search input
         setAlertsSearchInput("");
         searchHandler(""); // Refresh displayed list of alerts
       } else {
         const error = await api_response.json();
+        toast.error(error.detail || "Failed to delete alert.");
         console.error("Failed to delete alert:", error.detail);
       }
     } catch (err) {
+      toast.error("Network error.");
       console.error("Error:", err);
     }
   };
