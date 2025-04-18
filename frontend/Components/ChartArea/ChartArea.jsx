@@ -11,6 +11,7 @@ const interval = '1d'
 function ChartArea({ apiUrl }) {
   const [chartData, setChartData] = useState("");
   const [chartSearchInput, setChartSearchInput] = useState("");
+  const [chartIsLoading, setChartIsLoading] = useState(false);
 
   const searchHandler = async (ticker_searched) => {
     const trimmed = ticker_searched.trim().toUpperCase();
@@ -19,9 +20,17 @@ function ChartArea({ apiUrl }) {
     if (!isValidTicker) {
       setChartData("");
     } else {
-      const api_response = await fetch(`${apiUrl}/stocks?ticker=${trimmed}&period=${period}&interval=${interval}`);
-      const stock_data = await api_response.json();
-      setChartData(stock_data);
+      setChartIsLoading(true);
+      try {
+        const api_response = await fetch(`${apiUrl}/stocks?ticker=${trimmed}&period=${period}&interval=${interval}`);
+        const stock_data = await api_response.json();
+        setChartData(stock_data);
+      } catch (err) {
+        console.error(err);
+        setChartData("");
+      } finally {
+        setChartIsLoading(false);
+      }
     }
   };
 
@@ -32,7 +41,7 @@ function ChartArea({ apiUrl }) {
         searchInput={chartSearchInput}
         setSearchInput={setChartSearchInput}
       />
-      <Chart chartData={chartData} />
+      <Chart chartData={chartData} chartIsLoading={chartIsLoading} />
     </div>
   );
 }

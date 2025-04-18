@@ -7,9 +7,10 @@ import {
   Tooltip,
   ResponsiveContainer
 } from "recharts";
+import { ClipLoader } from "react-spinners";
 import "./Chart.css";
 
-function Chart({ chartData }) {
+function Chart({ chartData, chartIsLoading }) {
   if (!chartData || chartData.detail === "Ticker not found") {
     return (
       <div id="chart">
@@ -21,6 +22,14 @@ function Chart({ chartData }) {
   if (!chartData.prices || chartData.prices.length === 0) {
     return <div id="chart"><p>No historical data</p></div>;
   }
+
+  if (chartIsLoading) {
+    return (
+      <div id="chart">
+        <ClipLoader size={40} color="#00d6d6" />
+      </div>
+    );
+  }  
 
   return (
     <div id="chart">
