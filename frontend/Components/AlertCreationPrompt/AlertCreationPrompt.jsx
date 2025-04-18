@@ -46,6 +46,25 @@ function AlertCreationPrompt({
     }
 
     try {
+      const query = `ticker=${trimmed}&price=${form.price}&direction=${form.type}`;
+      const api_response = await fetch(`${apiUrl}/check-alert?${query}`);
+      if (!api_response.ok) {
+        const error = await api_response.json();
+        toast.dismiss();
+        toast.error(error.detail || 'Error checking validity of alert.', {
+          style: {
+            whiteSpace: 'nowrap',
+            width: 'auto',
+            maxWidth: 'none',
+          },
+      });
+        return
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+    try {
       const api_response = await fetch(`${apiUrl}/alerts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
