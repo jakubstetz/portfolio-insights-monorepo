@@ -16,7 +16,7 @@ A stock analysis and alerting tool that lets users search for stock data and cre
 | Layer    | Tools & Libraries                                          |
 | -------- | ---------------------------------------------------------- |
 | Frontend | React (Vite), Recharts, Vanilla CSS, AWS Amplify           |
-| Backend  | FastAPI, psycopg, PostgreSQL (AWS RDS), yfinance, Docker   |
+| Backend  | FastAPI, psycopg, PostgreSQL (AWS RDS), yfinance           |
 | DevOps   | GitHub Actions, Docker, AWS EC2, CI/CD, Husky, lint-staged |
 | Linting  | ESLint, Prettier, Black                                    |
 
