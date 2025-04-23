@@ -59,6 +59,7 @@ function AlertsArea({
           `${apiUrl}/alerts?search_term=${trimmed}`,
         );
         const retrieved_alerts = await api_response.json();
+        console.log("Retrieved alerts:", retrieved_alerts);
         setAlerts(retrieved_alerts);
       } catch (err) {
         console.error(err);
