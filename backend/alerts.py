@@ -5,12 +5,14 @@ Manage stock price alerts through interaction with the PostgreSQL database.
 import database
 import market
 from datetime import datetime, timezone
+from utils.logging import logger
 
 
 def search(search_term):
     """
     Search stock price alerts by a search term.
     """
+    logger.debug("Fetching alerts for search_term: %s", search_term)
     # Use wildcards (%) to match prefix, suffix, or substring
     ilike_argument = "%" + search_term + "%"
     with database.connection.cursor() as cur:
@@ -18,6 +20,7 @@ def search(search_term):
         # Extract column names from the result metadata
         keys = [column[0] for column in cur.description]
         all_alerts = cur.fetchall()
+        logger.info("Retrieved %d alerts", len(all_alerts))
         # Format results as list of dictionaries for JSON compatibility
         return [dict(zip(keys, row)) for row in all_alerts]
 
