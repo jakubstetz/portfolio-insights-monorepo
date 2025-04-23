@@ -9,6 +9,11 @@ Start the server by running the shell command:
 fastapi dev server.py
 """
 
+from utils.logging import logger
+
+logger.info("Starting Portfolio Insights backend")
+logger.info("Importing modules...")
+
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import alerts
@@ -18,10 +23,15 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional
 import os
-
 from dotenv import load_dotenv
 
+logger.info("Modules loaded")
+
+
 load_dotenv()
+logger.info(f"Environment loaded:")
+for key, value in os.environ.items():
+    logger.info(f"   {key} = {value}")
 
 cors_origins = os.getenv("CORS_ORIGINS").split(",")
 
@@ -51,12 +61,14 @@ app.add_middleware(
 # On startup, open database connection
 @app.on_event("startup")
 def startup():
+    logger.info("Opening database connection")
     return database.init()
 
 
 # On shutdown, close database connection
 @app.on_event("shutdown")
 def shutdown():
+    logger.info("Closing database connection")
     return database.close()
 
 
@@ -80,7 +92,9 @@ def health_check():
 # Health check for database and market connections
 @app.get("/health/deep")
 def health_check_deep():
+    logger.info("Testing database connection...")
     db_ok = database.ping()
+    logger.info("Testing market connection...")
     market_ok = market.ping()
     return {
         "status": "ok" if db_ok and market_ok else "fail",

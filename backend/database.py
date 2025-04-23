@@ -10,6 +10,7 @@ for connection string format.
 
 import os
 import psycopg as postgres
+from utils.logging import logger
 
 # Initialize to satisfy module scope before first use
 connection = None
@@ -26,6 +27,8 @@ def init():
     username = os.getenv("DATABASE_USERNAME")
     password = os.getenv("DATABASE_PASSWORD")
 
+    logger.info(f'Connecting to DB "{dbname}": {host}:{port}')
+
     dsn = f"host={host} port={port} dbname={dbname} user={username} password={password}"
     connection = postgres.connect(dsn)
 
@@ -37,8 +40,10 @@ def ping():
     try:
         with connection.cursor() as cur:
             cur.execute("SELECT 1")
+        logger.info("Database ping succeeded")
         return True
-    except:
+    except Exception as e:
+        logger.exception("Database ping failed")
         return False
 
 
@@ -47,5 +52,6 @@ def close():
     Close database connection on API shutdown.
     """
     global connection
+    logger.info("Closing database connection")
     if connection:
         connection.close()
