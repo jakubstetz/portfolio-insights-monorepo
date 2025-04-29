@@ -1,4 +1,6 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged
+# Add nvm's Node to PATH
+export PATH="$HOME/.nvm/versions/node/v23.3.0/bin:$PATH"
+
+./node_modules/.bin/lint-staged
