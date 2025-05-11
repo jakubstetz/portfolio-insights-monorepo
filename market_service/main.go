@@ -1,3 +1,12 @@
+/*
+main.go starts an HTTP server that proxies stock data from Tiingo.
+
+Comments in this file are intentionally verbose for educational purposes.
+This is my first time writing a full Go file as part of a larger project,
+so I was liberal and even excessive with comments to facilitate learning and
+serve as a reference for future Go development.
+*/
+
 package main
 
 // Built-in Go packages
