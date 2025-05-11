@@ -21,7 +21,8 @@ import (
 )
 
 // TiingoPrice represents a single entry from the Tiingo historical price API
-// Note that keys are in PascalCase since we want to export them
+// Note that fields are in PascalCase since we want to export them
+// Note that JSON object keys map to Go struct fields
 type TiingoPrice struct {
 	Date  string  `json:"date"`  // Struct tag for JSON marshalling/unmarshalling
 	Close float64 `json:"close"` // Field must be exported (capitalized) to be included in JSON
