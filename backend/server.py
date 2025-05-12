@@ -18,7 +18,6 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 import alerts
 import database
-import market
 from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional

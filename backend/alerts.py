@@ -3,7 +3,6 @@ Manage stock price alerts through interaction with the PostgreSQL database.
 """
 
 import database
-import market
 from datetime import datetime, timezone
 from utils.logging import logger
 
