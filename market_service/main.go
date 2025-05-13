@@ -41,8 +41,36 @@ func init() {
 }
 
 func main() {
+	// --------- Health Check ---------
+
+	// Define /health-check route
+	// This verifies that the Go microservice is running and that it is connected to the Tiingo API
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		apiKey := os.Getenv("TIINGO_API_KEY")
+		if apiKey == "" {
+			http.Error(w, "missing API key", http.StatusInternalServerError)
+			return
+		}
+
+		// Make lightweight request to Tiingo using stable ticker (SPY)
+		url := fmt.Sprintf("https://api.tiingo.com/tiingo/daily/SPY/prices?token=%s", apiKey)
+		resp, err := http.Get(url)
+		if err != nil || resp.StatusCode != 200 {
+			http.Error(w, "error fetching from Tiingo", http.StatusBadGateway)
+			return
+		}
+		defer resp.Body.Close() // Clean up response body
+
+		// Confirm service and API connectivity
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"health": true}`))
+	})
+
+	// --------- Stock Data Retrieval ---------
+
 	// Define /stocks route
 	// Note that * is the Go pointer operator
+	// w and r are analogous to res and req in Express.js, respectively
 	http.HandleFunc("/stocks", func(w http.ResponseWriter, r *http.Request) {
 		// Extract queries from GET request
 		// Go idiom: := declares and initializes a variable with inferred type
