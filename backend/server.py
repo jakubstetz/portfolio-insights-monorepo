@@ -16,6 +16,7 @@ logger.info("Importing modules...")
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+import httpx
 import alerts
 import database
 from pydantic import BaseModel
@@ -33,6 +34,7 @@ for key, value in os.environ.items():
     logger.info(f"   {key} = {value}")
 
 cors_origins = os.getenv("CORS_ORIGINS").split(",")
+go_api_url = os.getenv("GO_API_URL")
 
 
 # Used in POST /alerts for automatic validation and parsing
@@ -110,14 +112,24 @@ async def test():
 
 # ------------------------------------------------------------------------#
 
-##### yfinance Connections #####
+##### Market Connections #####
 
 
 # Endpoint to return stock price history
 @app.get("/stocks")
 async def get_stock_info(ticker, startDate, interval):
+    endpoint = "/stocks"
+    query = f"?ticker={ticker}&startDate={startDate}&interval={interval}"
+    url = go_api_url + endpoint + query
     try:
-        return market.stock_info(ticker, startDate, interval)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail="Error from Go service"
+        )
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
