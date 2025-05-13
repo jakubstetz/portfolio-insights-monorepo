@@ -4,5 +4,6 @@
     "npm run format"
   ],
   "**/*.{html,css,json,md,yaml,toml}": "npm run format",
-  "**/*.py": "backend/.venv/bin/black"
+  "**/*.py": "backend/.venv/bin/black",
+  "**/*.go": "go fmt"
 }
