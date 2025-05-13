@@ -92,11 +92,23 @@ def health_check():
 
 # Health check for database and market connections
 @app.get("/health/deep")
-def health_check_deep():
+async def health_check_deep():
+
     logger.info("Testing database connection...")
     db_ok = database.ping()
+
     logger.info("Testing market connection...")
-    market_ok = market.ping()
+    endpoint = "/health"
+    url = go_api_url + endpoint
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        market_ok = True
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Go microservice health check failed: {e}")
+        market_ok = False
+
     return {
         "status": "ok" if db_ok and market_ok else "fail",
         "database connection": db_ok,
