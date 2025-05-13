@@ -11,13 +11,13 @@ package main // Every standalone executable Go program must have package main
 
 // Built-in Go packages
 import (
-	"encoding/json" // For converting structs to JSON (and vice versa)
-	"fmt"           // For string formatting
-	"io"            // For reading from response bodies
-	"log"           // For printing logs to the terminal
-	"net/http"      // For making and serving HTTP requests
-	"os"            // For reading environment variables
-	"github.com/joho/godotenv"	// For loading a .env file
+	"encoding/json"            // For converting structs to JSON (and vice versa)
+	"fmt"                      // For string formatting
+	"github.com/joho/godotenv" // For loading a .env file
+	"io"                       // For reading from response bodies
+	"log"                      // For printing logs to the terminal
+	"net/http"                 // For making and serving HTTP requests
+	"os"                       // For reading environment variables
 )
 
 // TiingoPrice represents a single entry from the Tiingo historical price API
@@ -90,7 +90,7 @@ func main() {
 			Prices: tiingoPrices,
 		}
 		w.Header().Set("Content-Type", "application/json") // Set headers
-		json.NewEncoder(w).Encode(response) // Format as JSON
+		json.NewEncoder(w).Encode(response)                // Format as JSON
 	})
 
 	// Start server
