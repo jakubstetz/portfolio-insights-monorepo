@@ -62,7 +62,13 @@ func main() {
 		}
 
 		// Send GET request to Tiingo API to retrieve stock price history
-		url := fmt.Sprintf("https://api.tiingo.com/tiingo/daily/%s/prices?token=%s", ticker, apiKey)
+		url := fmt.Sprintf(
+			"https://api.tiingo.com/tiingo/daily/%s/prices?startDate=%s&resampleFreq=%s&token=%s",
+			ticker,
+			startDate,
+			resampleFreq,
+			apiKey,
+		)
 		resp, err := http.Get(url)
 		// OK response is expected to have no error and a 200 status code
 		if err != nil || resp.StatusCode != 200 {
