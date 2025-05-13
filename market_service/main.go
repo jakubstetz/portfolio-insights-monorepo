@@ -20,19 +20,16 @@ import (
 	"os"                       // For reading environment variables
 )
 
-// TiingoPrice represents a single entry from the Tiingo historical price API
+// PricePoint represents a single entry from the Tiingo historical price API
 // Note that fields are in PascalCase since we want to export them
 // Note that JSON object keys map to Go struct fields
-type TiingoPrice struct {
+type PricePoint struct {
 	Date  string  `json:"date"`  // Struct tag for JSON marshalling/unmarshalling
 	Close float64 `json:"close"` // Field must be exported (capitalized) to be included in JSON
 }
 
 // PriceResponse is what our Go service returns to the frontend/backend
-type PriceResponse struct {
-	Ticker string        `json:"ticker"`
-	Prices []TiingoPrice `json:"prices"`
-}
+type PriceResponse []PricePoint
 
 // Load .env file
 func init() {
@@ -79,18 +76,13 @@ func main() {
 		// As in other languages, _ is used to indicate an unused variable
 		body, _ := io.ReadAll(resp.Body)
 
-		var tiingoPrices []TiingoPrice
+		var tiingoPrices []PricePoint
 		// Unmarshalling converts JSON bytes into native Go data structures
 		// Error is ignored here for brevity, but should be handled in production.
 		// &tiingoPrices passes a pointer so json.Unmarshal can populate the slice in place
 		json.Unmarshal(body, &tiingoPrices)
-
-		response := PriceResponse{
-			Ticker: ticker,
-			Prices: tiingoPrices,
-		}
 		w.Header().Set("Content-Type", "application/json") // Set headers
-		json.NewEncoder(w).Encode(response)                // Format as JSON
+		json.NewEncoder(w).Encode(tiingoPrices)            // Format as JSON
 	})
 
 	// Start server
