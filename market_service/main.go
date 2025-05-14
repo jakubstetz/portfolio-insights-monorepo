@@ -181,7 +181,7 @@ func main() {
 			currentPrice = *result[0].Last
 		} else {
 			currentPrice = result[0].PrevClose
-			log.Println("⚠️  Live price unavailable — using previous close.")
+			log.Printf(`⚠️  Live price unavailable for %s — using previous close.`, ticker)
 		}
 
 		// Set header preemptively rather than repeating for each possible JSON response
