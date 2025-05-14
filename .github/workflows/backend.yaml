@@ -50,6 +50,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
             cd portfolio-insights/market_services
+            echo "TIINGO_API_KEY=${{ secrets.TIINGO_API_KEY }}" > .env
             go build -o market-service main.go
             pkill -f market-service || true
             nohup ./market-service > market.log 2>&1 &
