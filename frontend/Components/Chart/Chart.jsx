@@ -35,18 +35,10 @@ function Chart({ chartData, chartIsLoading }) {
     );
   }
 
-  if (!chartData.prices || chartData.prices.length === 0) {
-    return (
-      <div id="chart">
-        <p>No historical data</p>
-      </div>
-    );
-  }
-
   return (
     <div id="chart">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData.prices}>
+        <LineChart data={chartData}>
           <CartesianGrid
             strokeDasharray="3 3"
             stroke="#475569"
@@ -84,8 +76,9 @@ function Chart({ chartData, chartIsLoading }) {
             dataKey="close"
             stroke="#00ff65"
             dot={({ index, cx, cy, payload }) =>
-              index === chartData.prices.length - 1 ? (
+              index === chartData.length - 1 ? (
                 <circle
+                  key={`last-dot`}
                   cx={cx}
                   cy={cy}
                   r={3.5}

@@ -1,5 +1,6 @@
 name: Deploy Backend to EC2
 
+# Trigger this workflow on manual invocation or when main is pushed and backend or market service changes
 on:
   workflow_dispatch:
   push:
@@ -7,6 +8,7 @@ on:
       - main
     paths:
       - "backend/**"
+      - "market_service/**"
       - ".github/workflows/backend.yml"
 
 jobs:
@@ -14,22 +16,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Check out the code from the GitHub repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 2: Set up SSH agent using the EC2 private key stored in GitHub Secrets
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.AWS_EC2_INSTANCE_SSH_CONNECTION_PRIVATE_KEY }}
 
-      - name: Deploy to EC2
+      # Step 3: SSH into EC2 instance and pull the latest changes from the main branch
+      - name: SSH and Pull Repo
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
             cd portfolio-insights
             git pull origin main
-            cd backend
+          EOF
+
+      # Step 4: Rebuild and restart the FastAPI backend in Docker
+      - name: Deploy Backend
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            cd portfolio-insights/backend
             docker stop portfolio-insights-backend || true
             docker rm portfolio-insights-backend || true
             docker build -t portfolio-insights-backend .
             docker run -d --name portfolio-insights-backend -p 8000:8000 --env-file .env portfolio-insights-backend
+          EOF
+
+      # Step 5: Compile and run Go-based market microservice
+      - name: Deploy Market Microservice
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            cd portfolio-insights/market_services
+            go build -o market-service main.go
+            pkill -f market-service || true
+            nohup ./market-service > market.log 2>&1 &
           EOF

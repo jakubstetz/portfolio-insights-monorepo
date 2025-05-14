@@ -16,9 +16,9 @@ logger.info("Importing modules...")
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+import httpx
 import alerts
 import database
-import market
 from pydantic import BaseModel
 from datetime import datetime
 from typing import List, Dict, Optional
@@ -34,6 +34,7 @@ for key, value in os.environ.items():
     logger.info(f"   {key} = {value}")
 
 cors_origins = os.getenv("CORS_ORIGINS").split(",")
+go_api_url = os.getenv("GO_API_URL")
 
 
 # Used in POST /alerts for automatic validation and parsing
@@ -91,11 +92,23 @@ def health_check():
 
 # Health check for database and market connections
 @app.get("/health/deep")
-def health_check_deep():
+async def health_check_deep():
+
     logger.info("Testing database connection...")
     db_ok = database.ping()
+
     logger.info("Testing market connection...")
-    market_ok = market.ping()
+    endpoint = "/health"
+    url = go_api_url + endpoint
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        market_ok = True
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Go microservice health check failed: {e}")
+        market_ok = False
+
     return {
         "status": "ok" if db_ok and market_ok else "fail",
         "database connection": db_ok,
@@ -111,31 +124,48 @@ async def test():
 
 # ------------------------------------------------------------------------#
 
-##### yfinance Connections #####
+##### Market Connections #####
 
 
 # Endpoint to return stock price history
 @app.get("/stocks")
-async def get_stock_info(ticker, period, interval):
+async def get_stock_info(ticker, startDate, interval):
+    endpoint = "/stocks"
+    query = f"?ticker={ticker}&startDate={startDate}&interval={interval}"
+    url = go_api_url + endpoint + query
     try:
-        return market.stock_info(ticker, period, interval)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(
+            status_code=e.response.status_code, detail="Error from Go service"
+        )
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Ticker not found")
 
 
 @app.get("/check-alert")
-async def check_alert(ticker, price: float, direction):
+async def check_alert(ticker: str, price: float, direction: str):
+    endpoint = "/check-alert"
+    query = f"?ticker={ticker}&price={price}&direction={direction}"
+    url = go_api_url + endpoint + query
     try:
-        market_response = market.is_valid_alert(ticker, price, direction)
-        if not market_response["valid"]:
-            raise HTTPException(status_code=400, detail=market_response["message"])
-        return market_response
-    except HTTPException:
-        raise
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPStatusError as e:
+        try:
+            detail = e.response.json().get("message", "Error from Go service")
+        except Exception:
+            detail = "Error from Go service"
+        raise HTTPException(status_code=e.response.status_code, detail=detail)
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=404, detail="Ticker not found")
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=502, detail="Market service unavailable")
 
 
 # ------------------------------------------------------------------------#
