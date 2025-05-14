@@ -36,7 +36,8 @@ type PriceResponse []PricePoint
 // LastPrice is used in our alert validation endpoint to store the most
 // recent stock price
 type LastPrice struct {
-	Price float64 `json:"last"`
+	Last      *float64 `json:"last"` // Pointer used to check if value exists in /check-alert implementation
+	PrevClose float64  `json:"prevClose"`
 }
 
 // Load .env file
@@ -152,7 +153,7 @@ func main() {
 			return
 		}
 
-		url := fmt.Sprintf("https://api.tiingo.com/tiingo/daily/%s?token=%s", ticker, apiKey)
+		url := fmt.Sprintf("https://api.tiingo.com/iex/%s?token=%s", ticker, apiKey)
 		resp, err := http.Get(url)
 		if err != nil || resp.StatusCode != 200 {
 			http.Error(w, `{"valid": false, "message": "Ticker not found or data unavailable."}`, http.StatusBadRequest)
@@ -161,30 +162,35 @@ func main() {
 		defer resp.Body.Close()
 
 		body, _ := io.ReadAll(resp.Body)
-		var result LastPrice
+		var result []LastPrice
 		json.Unmarshal(body, &result)
-		currentPrice := result.Price
+		// Verify price data has been successfully retrieved
+		if err != nil {
+			http.Error(w, `{"valid": false, "message": "Ticker not found."}`, http.StatusInternalServerError)
+			return
+		}
+		if len(result) == 0 {
+			http.Error(w, `{"valid": false, "message": "Ticker not found."}`, http.StatusBadRequest)
+			return
+		}
+
+		// Use last price if it exists (i.e. market is open)
+		// Use Previous close otherwise (i.e. market is closed)
+		var currentPrice float64
+		if result[0].Last != nil {
+			currentPrice = *result[0].Last
+		} else {
+			currentPrice = result[0].PrevClose
+			log.Println("⚠️  Live price unavailable — using previous close.")
+		}
 
 		// Set header preemptively rather than repeating for each possible JSON response
 		w.Header().Set("Content-Type", "application/json")
 
 		// Check for invalid alert
-		if direction == "above" && currentPrice > price {
-			msg := fmt.Sprintf("Current price is $%.2f, already above $%.2f.", currentPrice, price)
-			// Go maps are constructed with the syntax map[keyType]valueType
-			// interface{} allows us to hold any data type
-			json.NewEncoder(w).Encode(map[string]interface{}{
-				"valid":   false,
-				"message": msg,
-			})
-			return
-		}
-		if direction == "below" && currentPrice < price {
-			msg := fmt.Sprintf("Current price is $%.2f, already below $%.2f.", currentPrice, price)
-			json.NewEncoder(w).Encode(map[string]interface{}{
-				"valid":   false,
-				"message": msg,
-			})
+		if (direction == "below" && currentPrice < price) || (direction == "above" && currentPrice > price) {
+			msg := fmt.Sprintf("Current price is $%.2f, already %s $%.2f.", currentPrice, direction, price)
+			http.Error(w, fmt.Sprintf(`{"message": "%s"}`, msg), http.StatusBadRequest)
 			return
 		}
 
