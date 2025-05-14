@@ -148,17 +148,24 @@ async def get_stock_info(ticker, startDate, interval):
 
 
 @app.get("/check-alert")
-async def check_alert(ticker, price: float, direction):
+async def check_alert(ticker: str, price: float, direction: str):
+    endpoint = "/check-alert"
+    query = f"?ticker={ticker}&price={price}&direction={direction}"
+    url = go_api_url + endpoint + query
     try:
-        market_response = market.is_valid_alert(ticker, price, direction)
-        if not market_response["valid"]:
-            raise HTTPException(status_code=400, detail=market_response["message"])
-        return market_response
-    except HTTPException:
-        raise
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPStatusError as e:
+        try:
+            detail = e.response.json().get("message", "Error from Go service")
+        except Exception:
+            detail = "Error from Go service"
+        raise HTTPException(status_code=e.response.status_code, detail=detail)
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=404, detail="Ticker not found")
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=502, detail="Market service unavailable")
 
 
 # ------------------------------------------------------------------------#
