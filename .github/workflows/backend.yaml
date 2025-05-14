@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - "backend/**"
+      - "market_service/**"
       - ".github/workflows/backend.yml"
 
 jobs:
@@ -22,14 +23,28 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_EC2_INSTANCE_SSH_CONNECTION_PRIVATE_KEY }}
 
-      - name: Deploy to EC2
+      - name: SSH and Pull Repo
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
             cd portfolio-insights
             git pull origin main
-            cd backend
+          EOF
+
+      - name: Deploy Backend
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            cd portfolio-insights/backend
             docker stop portfolio-insights-backend || true
             docker rm portfolio-insights-backend || true
             docker build -t portfolio-insights-backend .
             docker run -d --name portfolio-insights-backend -p 8000:8000 --env-file .env portfolio-insights-backend
+          EOF
+
+      - name: Deploy Market Microservice
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            cd portfolio-insights/market_services
+            go build -o market-service main.go
+            pkill -f market-service || true
+            nohup ./market-service > market.log 2>&1 &
           EOF
