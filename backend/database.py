@@ -16,7 +16,7 @@ from utils.logging import logger
 connection = None
 
 
-def init():
+def init() -> None:
     """
     Open a connection to our portfolio_insights database on API startup.
     """
@@ -33,7 +33,7 @@ def init():
     connection = postgres.connect(dsn)
 
 
-def ping():
+def ping() -> bool:
     """
     Health check for testing API connection to database.
     """
@@ -47,7 +47,7 @@ def ping():
         return False
 
 
-def close():
+def close() -> None:
     """
     Close database connection on API shutdown.
     """

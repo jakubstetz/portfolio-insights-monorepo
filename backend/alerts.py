@@ -5,9 +5,11 @@ Manage stock price alerts through interaction with the PostgreSQL database.
 import database
 from datetime import datetime, timezone
 from utils.logging import logger
+from typing import List, Dict, Any
+from pydantic import BaseModel
 
 
-def search(search_term):
+def search(search_term: str) -> List[Dict[str, Any]]:
     """
     Search stock price alerts by a search term.
     """
@@ -24,7 +26,7 @@ def search(search_term):
         return [dict(zip(keys, row)) for row in all_alerts]
 
 
-def create(alert):
+def create(alert: BaseModel) -> int:
     """
     Create a new stock price alert. Note that the alert id will be automatically created in the database using SERIAL.
     """
@@ -48,7 +50,7 @@ def create(alert):
         return cur.fetchone()[0]  # Return the newly created alert id
 
 
-def delete(id):
+def delete(id: int) -> None:
     """
     Delete a stock price alert by id.
     """
@@ -57,7 +59,8 @@ def delete(id):
         database.connection.commit()
 
 
-def evaluate():
+# THE EVALUATE FUNCTION WILL NOT WORK BECAUSE IT HAS NOT YET BEEN REFACTORED TO CONNECT TO MAIN.GO INSTEAD OF MARKET.PY
+def evaluate() -> None:
     """
     Evaluate all alerts against stock prices to determine if alert should be triggered.
     """
@@ -89,7 +92,7 @@ def evaluate():
             trigger(id)
 
 
-def trigger(id):
+def trigger(id: int) -> None:
     """
     Triggers an alert based on its id.
     """

@@ -61,14 +61,14 @@ app.add_middleware(
 
 # On startup, open database connection
 @app.on_event("startup")
-def startup():
+def startup() -> None:
     logger.info("Opening database connection")
     return database.init()
 
 
 # On shutdown, close database connection
 @app.on_event("shutdown")
-def shutdown():
+def shutdown() -> None:
     logger.info("Closing database connection")
     return database.close()
 
@@ -80,19 +80,19 @@ def shutdown():
 
 # Root
 @app.get("/")
-async def root():
+async def root() -> str:
     return "Hello World"
 
 
 # Health check for uptime monitoring
 @app.get("/health")
-def health_check():
+def health_check() -> Dict[str, str]:
     return {"status": "ok"}
 
 
 # Health check for database and market connections
 @app.get("/health/deep")
-async def health_check_deep():
+async def health_check_deep() -> Dict[str, str | bool]:
 
     logger.info("Testing database connection...")
     db_ok = database.ping()
@@ -129,7 +129,9 @@ async def test():
 
 # Endpoint to return stock price history
 @app.get("/stocks")
-async def get_stock_info(ticker, startDate, interval):
+async def get_stock_info(
+    ticker: str, startDate: str, interval: str
+) -> List[Dict[str, str | float]]:
     endpoint = "/stocks"
     query = f"?ticker={ticker}&startDate={startDate}&interval={interval}"
     url = go_api_url + endpoint + query
@@ -148,7 +150,9 @@ async def get_stock_info(ticker, startDate, interval):
 
 
 @app.get("/check-alert")
-async def check_alert(ticker: str, price: float, direction: str):
+async def check_alert(
+    ticker: str, price: float, direction: str
+) -> Dict[str, str | bool]:
     endpoint = "/check-alert"
     query = f"?ticker={ticker}&price={price}&direction={direction}"
     url = go_api_url + endpoint + query
@@ -175,7 +179,7 @@ async def check_alert(ticker: str, price: float, direction: str):
 
 # Get alerts matching optional search_term
 @app.get("/alerts", response_model=List[Dict])
-async def search_alerts(search_term=""):
+async def search_alerts(search_term: str = "") -> List[Dict]:
     try:
         return alerts.search(search_term)
     except Exception as e:
@@ -185,7 +189,7 @@ async def search_alerts(search_term=""):
 
 # Endpoint to create a new alert
 @app.post("/alerts", status_code=status.HTTP_201_CREATED)
-def create_alert(alert: Alert):
+def create_alert(alert: Alert) -> Dict[str, str | int]:
     try:
         alert_id = alerts.create(alert)
         return {"message": "Alert created successfully", "new_alert_id": alert_id}
@@ -196,7 +200,7 @@ def create_alert(alert: Alert):
 
 # Delete alert by ID (query parameter)
 @app.delete("/alerts")
-def delete_alert(id):
+def delete_alert(id: int) -> Dict[str, str | int]:
     try:
         alerts.delete(id)
         return {"message": "Alert deleted successfully", "deleted_alert_id": id}
