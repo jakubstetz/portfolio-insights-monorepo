@@ -6,7 +6,7 @@ import database
 from datetime import datetime, timezone
 from utils.logging import logger
 from typing import List, Dict, Any
-from pydantic import BaseModel
+from schemas import Alert
 
 
 def search(search_term: str) -> List[Dict[str, Any]]:
@@ -26,7 +26,7 @@ def search(search_term: str) -> List[Dict[str, Any]]:
         return [dict(zip(keys, row)) for row in all_alerts]
 
 
-def create(alert: BaseModel) -> int:
+def create(alert: Alert) -> int:
     """
     Create a new stock price alert. Note that the alert id will be automatically created in the database using SERIAL.
     """

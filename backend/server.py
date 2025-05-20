@@ -19,9 +19,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import alerts
 import database
-from pydantic import BaseModel
-from datetime import datetime
-from typing import List, Dict, Optional
+from schemas import Alert
+from typing import List, Dict
 import os
 from dotenv import load_dotenv
 
@@ -35,14 +34,6 @@ for key, value in os.environ.items():
 
 cors_origins = os.getenv("CORS_ORIGINS").split(",")
 go_api_url = os.getenv("GO_API_URL")
-
-
-# Used in POST /alerts for automatic validation and parsing
-class Alert(BaseModel):
-    ticker: str  # 1-10 characters, enforced in database
-    price: float
-    direction: str  # 'above' or 'below'
-    expiration_time: Optional[datetime]  # ISO 8601 string will be automatically parsed
 
 
 app = FastAPI()
