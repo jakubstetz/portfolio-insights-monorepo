@@ -42,7 +42,7 @@ jobs:
             docker stop portfolio-insights-backend || true
             docker rm portfolio-insights-backend || true
             docker build -t portfolio-insights-backend .
-            docker run -d --name portfolio-insights-backend -p 8000:8000 --env-file .env portfolio-insights-backend
+            docker run -d --name portfolio-insights-backend -p 8001:8001 --env-file .env portfolio-insights-backend
           EOF
 
       # Step 5: Compile and run Go-based market microservice
