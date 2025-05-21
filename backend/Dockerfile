@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY . .
 
+# Note that if deployment port is adjusted then EC2 NGINX reverse-proxy configuration should also be updated
 EXPOSE 8001
 
 RUN pip install --no-cache-dir --upgrade pip && \
