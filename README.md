@@ -41,7 +41,7 @@ pip install -r requirements.txt
 fastapi dev server.py
 ```
 
-** Frontend:**
+**Frontend:**
 
 ```bash
 cd frontend
